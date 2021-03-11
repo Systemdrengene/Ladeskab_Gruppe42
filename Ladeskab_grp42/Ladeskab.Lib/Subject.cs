@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    abstract class Observer
+    abstract class Subject
     {
-        private List<ISubject> _subjects = new List<ISubject>();
+        private List<IObserver> _subjects = new List<IObserver>();
 
-        void Attach(ISubject s)
+        void Attach(IObserver s)
         {
             if (!_subjects.Contains(s))
                 _subjects.Add(s);
         }
 
-        void Detache(ISubject s)
+        void Detache(IObserver s)
         {
             _subjects?.Remove(s);
         }
@@ -26,7 +26,7 @@ namespace Ladeskab.Lib
             if (!_subjects.Any())
                 return;
 
-            foreach (ISubject s in _subjects)
+            foreach (IObserver s in _subjects)
             {
                 s.Update();
             }
