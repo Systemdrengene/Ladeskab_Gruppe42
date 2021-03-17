@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    class Door : Subject, IDoor
+    public class Door : Subject, IDoor
     {
+        #region Variables
+
+        #endregion
+
         #region Door interface
         public void LockDoor()
         {
@@ -17,6 +21,10 @@ namespace Ladeskab.Lib
         {
             Console.WriteLine("Door Unlocked");
         }
+        #endregion
+
+        #region Subject inheritance
+
         #endregion
     }
 }
