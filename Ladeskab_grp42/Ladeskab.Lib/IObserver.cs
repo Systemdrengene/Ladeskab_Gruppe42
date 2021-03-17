@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    interface ISubject
+    interface IObserver
     {
         void Update();
     }

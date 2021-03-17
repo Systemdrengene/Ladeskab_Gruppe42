@@ -7,11 +7,11 @@ using System.IO;
 
 namespace Ladeskab.Lib
 {
-    class FileLogger
+    public class FileLogger
     {
         public void LogFile(string logmsg)
         {
-            string path = "C:/Users/1chri/Documents/GitHub/Ladeskab_Gruppe42/Ladeskab_grp42";
+            string path = "$(SolutionDir)/log.txt";
 
             using (StreamWriter sw = File.AppendText(path))
             {
