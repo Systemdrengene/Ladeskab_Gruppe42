@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UsbSimulator;
 
-namespace Ladeskab
+namespace Ladeskab.Lib
 {
     public class StationControl
     {
@@ -21,6 +21,7 @@ namespace Ladeskab
         // Her mangler flere member variable
         private LadeskabState _state;
         private IUsbCharger _charger;
+        private IDoor _door;
         private int _oldId;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
