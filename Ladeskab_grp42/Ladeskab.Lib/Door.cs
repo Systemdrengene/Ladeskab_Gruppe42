@@ -21,7 +21,7 @@ namespace Ladeskab.Lib
                 Console.WriteLine("Door Locked");
             }
         }
-        public void OpenDoor()
+        public void UnlockDoor()
         {
             if (!doorOpen)
             {
@@ -29,6 +29,17 @@ namespace Ladeskab.Lib
                 Console.WriteLine("Door Unlocked");
             }
         }
+
+        public void OnDoorOpen()
+        {
+
+        }
+
+        public void OnDoorClose()
+        {
+
+        }
+
         #endregion
 
         #region Subject inheritance

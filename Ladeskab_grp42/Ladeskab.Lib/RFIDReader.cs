@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    class RFIDReader : Subject, IRFIDReader
+    public class RFIDReader : Subject, IRFIDReader
     {
-        Random rnd = new Random();
+        int id = -1;
+        public void OnRfidRead(int id)
+        {
+            Console.WriteLine("Read ID: " + id);
+            this.id = id;
+        }
         public int GetID()
         {
-            return rnd.Next(50);
+            if (id != -1)
+            {
+                return id;
+            }
+            throw new Exception("RFID hasn't been read!");
         }
     }
 }
