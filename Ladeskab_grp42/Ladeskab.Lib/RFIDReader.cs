@@ -8,9 +8,10 @@ namespace Ladeskab.Lib
 {
     class RFIDReader : Subject, IRFIDReader
     {
+        Random rnd = new Random();
         public int GetID()
         {
-            throw new NotImplementedException();
+            return rnd.Next(50);
         }
     }
 }
