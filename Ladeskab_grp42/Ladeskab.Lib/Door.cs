@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    class Door : IDoor
+    class Door : Subject, IDoor
     {
         #region Variables
 

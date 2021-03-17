@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    interface IObserver
+    class Display
     {
-        void Update();
+        public void DisplayMessage(string msg)
+        {
+            Console.WriteLine("New Message: " + msg);
+        }
     }
 }
