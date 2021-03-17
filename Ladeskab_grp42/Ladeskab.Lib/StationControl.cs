@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UsbSimulator;
 
 namespace Ladeskab.Lib
 {
-    public class StationControl
+    public class StationControl : IObserver
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum LadeskabState
@@ -27,6 +26,17 @@ namespace Ladeskab.Lib
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         // Her mangler constructor
+        public StationControl()
+        {
+            _state = new LadeskabState();
+            _charger = new USBCharger();
+            _door = new Door();
+        }
+
+        public void Update()
+        {
+            
+        }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
         private void RfidDetected(int id)
