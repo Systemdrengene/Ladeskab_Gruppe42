@@ -8,7 +8,6 @@ namespace Ladeskab
         static void Main(string[] args)
         {
             // Assemble your system here from all the classes
-            Door door = new();
 
             bool finish = false;
             do
