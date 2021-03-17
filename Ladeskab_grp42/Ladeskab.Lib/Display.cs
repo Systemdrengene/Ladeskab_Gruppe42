@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    class Display
+    public class Display
     {
         public void DisplayMessage(string msg)
         {

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Ladeskab.Lib
 {
-    class FileLogger
+    public class FileLogger
     {
         public void LogFile(string logmsg)
         {
