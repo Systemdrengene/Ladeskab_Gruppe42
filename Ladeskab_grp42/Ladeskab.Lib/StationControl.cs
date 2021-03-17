@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UsbSimulator;
 
 namespace Ladeskab.Lib
 {
@@ -34,9 +33,9 @@ namespace Ladeskab.Lib
             _door = new Door();
         }
 
-        void Update()
+        public void Update()
         {
-
+            
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
