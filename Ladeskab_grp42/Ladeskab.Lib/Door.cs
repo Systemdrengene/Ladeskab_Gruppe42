@@ -13,7 +13,7 @@ namespace Ladeskab.Lib
         #endregion
 
         #region Door interface
-        public void OnDoorLock()
+        public void OnDoorClose()
         {
             if(doorOpen)
             {
