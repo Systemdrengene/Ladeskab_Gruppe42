@@ -8,6 +8,7 @@ namespace Ladeskab
         static void Main(string[] args)
         {
             Door door = new Door();
+            RFIDReader rfidReader = new RFIDReader();
             // Assemble your system here from all the classes
 
             bool finish = false;

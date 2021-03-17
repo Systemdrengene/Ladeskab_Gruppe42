@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    class RFIDReader : Subject, IRFIDReader
+    public class RFIDReader : Subject, IRFIDReader
     {
         Random rnd = new Random();
-        public int GetID()
+        public int OnRfidRead(int id)
         {
+
+
+
+            Console.WriteLine("Read ID: " + id);
             return rnd.Next(50);
         }
     }
