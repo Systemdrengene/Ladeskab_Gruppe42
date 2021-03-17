@@ -13,7 +13,7 @@ namespace Ladeskab.Lib
         #endregion
 
         #region Door interface
-        public void LockDoor()
+        public void OnDoorLock()
         {
             if(doorOpen)
             {
@@ -21,7 +21,7 @@ namespace Ladeskab.Lib
                 Console.WriteLine("Door Locked");
             }
         }
-        public void OpenDoor()
+        public void OnDoorOpen()
         {
             if (!doorOpen)
             {

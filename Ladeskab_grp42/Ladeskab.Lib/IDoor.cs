@@ -8,7 +8,7 @@ namespace Ladeskab.Lib
 {
     interface IDoor
     {
-        public void LockDoor();
-        public void OpenDoor();
+        public void OnDoorOpen();
+        public void OnDoorClose();
     }
 }
