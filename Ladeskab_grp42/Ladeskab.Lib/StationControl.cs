@@ -20,8 +20,8 @@ namespace Ladeskab.Lib
 
         // Her mangler flere member variable
         private LadeskabState _state;
-        private IUsbCharger _charger;
         private IDoor _door;
+        private IChargeControl _charger;
         private int _oldId;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
@@ -35,7 +35,7 @@ namespace Ladeskab.Lib
             {
                 case LadeskabState.Available:
                     // Check for ladeforbindelse
-                    if (_charger.Connected)
+                    if (_charger.IsConnected())
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
