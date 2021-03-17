@@ -9,17 +9,25 @@ namespace Ladeskab.Lib
     public class Door : Subject, IDoor
     {
         #region Variables
-
+        bool doorOpen = false;
         #endregion
 
         #region Door interface
         public void LockDoor()
         {
-            Console.WriteLine("Door Locked");
+            if(doorOpen)
+            {
+                doorOpen = false;
+                Console.WriteLine("Door Locked");
+            }
         }
         public void OpenDoor()
         {
-            Console.WriteLine("Door Unlocked");
+            if (!doorOpen)
+            {
+                doorOpen = true;
+                Console.WriteLine("Door Unlocked");
+            }
         }
         #endregion
 
