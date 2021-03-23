@@ -8,8 +8,8 @@ namespace Ladeskab.Lib
 {
     public interface IDoor
     {
-        public void LockDoor();
-        public void UnlockDoor();
+        public bool LockDoor();
+        public bool UnlockDoor();
         public void OnDoorClose();
         public void OnDoorOpen();
     }
