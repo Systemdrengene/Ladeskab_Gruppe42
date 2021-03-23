@@ -8,11 +8,16 @@ namespace Ladeskab.Lib
 {
     public class RFIDReader : Subject, IRFIDReader
     {
-        int id = -1;
+        private int id = -1;
+        public int Id
+        {
+            get { return GetID(); }
+            set { id = value; }
+        }
+
         public void OnRfidRead(int id)
         {
-            Console.WriteLine("Read ID: " + id);
-            this.id = id;
+            Notify("RFID");
         }
         public int GetID()
         {

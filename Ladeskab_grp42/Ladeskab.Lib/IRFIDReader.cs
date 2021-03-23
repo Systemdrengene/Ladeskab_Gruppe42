@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    interface IRFIDReader
+    public interface IRFIDReader
     {
         public int GetID();
 

@@ -10,25 +10,25 @@ namespace Ladeskab.Lib
     {
         private List<IObserver> _subjects = new List<IObserver>();
 
-        void Attach(IObserver s)
+        public void Attach(IObserver s)
         {
             if (!_subjects.Contains(s))
                 _subjects.Add(s);
         }
 
-        void Detache(IObserver s)
+        public void Detache(IObserver s)
         {
             _subjects?.Remove(s);
         }
 
-        void Notify()
+        public void Notify(string msg)
         {
             if (!_subjects.Any())
                 return;
 
             foreach (IObserver s in _subjects)
             {
-                s.Update();
+                s.Update(this, msg);
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    interface IDoor
+    public interface IDoor
     {
         public void LockDoor();
         public void UnlockDoor();
