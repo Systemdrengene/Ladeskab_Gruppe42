@@ -8,6 +8,6 @@ namespace Ladeskab.Lib
 {
     interface IObserver
     {
-        void Update();
+        public void Update();
     }
 }
