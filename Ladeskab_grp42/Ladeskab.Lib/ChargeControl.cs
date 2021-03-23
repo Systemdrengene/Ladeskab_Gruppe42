@@ -60,14 +60,14 @@ namespace Ladeskab.Lib
 		{
 			_chargerState = ChargerState.Idle;
 			_usbCharger.StartCharge();
-			// Display start charging message
+
 		}
 
 		public void StopCharge()
 		{
 			_chargerState = ChargerState.Idle;
 			_usbCharger.StopCharge();
-			//Display stop charging message
+
 		}
 
 		private void OnChargeCurrUpdate(object sender, CurrentEventArgs a)
