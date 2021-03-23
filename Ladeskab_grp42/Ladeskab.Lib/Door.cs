@@ -11,13 +11,13 @@ namespace Ladeskab.Lib
         #region Variables
 
         private bool doorUnlocked = false;
-
+        private bool doorOpen = false;
         #endregion
 
         #region Door interface
         public bool LockDoor()
         {
-            if(doorUnlocked)
+            if(doorUnlocked)  //Muligvis også tilføj om Door er open, så vi kan have flere test og mere validation
             {
                 doorUnlocked = false;
                 Console.WriteLine("Door Locked");
@@ -38,14 +38,27 @@ namespace Ladeskab.Lib
             return doorUnlocked;
         }
 
-        public void OnDoorOpen()
+        public bool OnDoorOpen()
         {
-            Notify("Door opened");
+	        if (!doorOpen)
+	        {
+		        doorOpen = true;
+				 Notify("Door opened");
+	        }
+
+	        return doorOpen;
+
         }
 
-        public void OnDoorClose()
+        public bool OnDoorClose()
         {
-            Notify("Door closed");
+	        if (doorOpen)
+	        {
+		        doorOpen = false;
+		        Notify("Door closed");
+            }
+
+	        return doorOpen;
         }
 
         #endregion
