@@ -17,47 +17,41 @@ namespace Ladeskab.Lib
         #region Door interface
         public bool LockDoor()
         {
-            if(doorUnlocked)  //Muligvis også tilføj om Door er open, så vi kan have flere test og mere validation
-            {
-                doorUnlocked = false;
-                Console.WriteLine("Door Locked");
-                
-            }
+	        // Locked or open = Kan ikke Lock
+	        if (!doorUnlocked || doorOpen) return doorUnlocked;  // return false;
 
+	        doorUnlocked = false; 
+            Console.WriteLine("Door Locked");
             return doorUnlocked;
 
         }
         public bool UnlockDoor()
         {
-            if (!doorUnlocked)
-            {
-                doorUnlocked = true;
-                Console.WriteLine("Door Unlocked");
-            }
-
+            // Unlocked = kan ikke unlock
+	        if (doorUnlocked) return doorUnlocked;
+            
+	        doorUnlocked = true;
+            Console.WriteLine("Door Unlocked");
             return doorUnlocked;
         }
 
         public bool OnDoorOpen()
         {
-	        if (!doorOpen)
-	        {
-		        doorOpen = true;
-				 Notify("Door opened");
-	        }
-
-	        return doorOpen;
-
+            // Already Open or locked = kan ikke doorOpen
+            if (doorOpen || !doorUnlocked) return doorOpen;
+	        
+	        doorOpen = true;
+			Notify("Door opened");
+			return doorOpen;
         }
 
         public bool OnDoorClose()
         {
-	        if (doorOpen)
-	        {
-		        doorOpen = false;
-		        Notify("Door closed");
-            }
-
+            // Door closed or locked = kan ikke close  
+            if (!doorOpen ) return doorOpen;
+	        
+	        doorOpen = false;
+	        Notify("Door closed");
 	        return doorOpen;
         }
 
