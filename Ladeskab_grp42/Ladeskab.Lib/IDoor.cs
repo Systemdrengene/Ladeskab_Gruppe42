@@ -10,7 +10,7 @@ namespace Ladeskab.Lib
     {
         public bool LockDoor();
         public bool UnlockDoor();
-        public void OnDoorClose();
-        public void OnDoorOpen();
+        public bool OnDoorClose();
+        public bool OnDoorOpen();
     }
 }
