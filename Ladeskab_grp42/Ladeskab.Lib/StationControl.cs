@@ -44,13 +44,13 @@ namespace Ladeskab.Lib
             switch(msg)
             {
                 case "Door opened":
-                    _display.DisplayMessage("Tilslut telefon");
+                    _display.UpdateUserMsg("Tilslut telefon");
                     break;
                 case "Door closed":
-                    _display.DisplayMessage("Indlæs RFID");
+                    _display.UpdateUserMsg("Indlæs RFID");
                     break;
                 case "RFID":
-                    _display.DisplayMessage("RFID has been read");
+                    _display.UpdateUserMsg("RFID has been read");
                     RfidDetected(_rfidReader.GetID());
                     break;
 
