@@ -45,6 +45,7 @@ namespace Ladeskab.Unit.Test
             Assert.That(_uut.GetID(), Is.EqualTo(-2));
         }
 
+        [Test]
         public void FullTest_PositiveIDValue()
         {
             var obs = Substitute.For<IObserver>();
