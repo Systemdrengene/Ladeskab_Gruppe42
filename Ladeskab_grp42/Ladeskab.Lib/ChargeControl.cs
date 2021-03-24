@@ -111,19 +111,19 @@ namespace Ladeskab.Lib
 			switch (_chargerState)
 			{
 				case ChargerState.OverCurrentFail:   //State charge fail
-					_display.DisplayMessage("Current failed");
+					_display.UpdateUserMsg("Current failed");
 					_latestState = ChargerState.OverCurrentFail;
 					break;
 				case ChargerState.FullyCharged:
-					_display.DisplayMessage("Fully Charged");
+					_display.UpdateUserMsg("Fully Charged");
 					_latestState = ChargerState.FullyCharged;
 					break;
 				case ChargerState.IsCharging:
-					_display.DisplayMessage("Is Charging");
+					_display.UpdateUserMsg("Is Charging");
 					_latestState = ChargerState.IsCharging;
 					break;
 				case ChargerState.Idle:
-					_display.DisplayMessage("Idle");
+					_display.UpdateUserMsg("Idle");
 					_latestState = ChargerState.Idle;
 					break;
 				default:

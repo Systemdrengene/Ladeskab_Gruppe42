@@ -8,9 +8,33 @@ namespace Ladeskab.Lib
 {
     public class Display : IDisplay
     {
-        public void DisplayMessage(string msg)
+        private string _stationMsg = "";
+        private string _chargeMsg = "";
+        public string Separator { get; private set; }
+
+        public Display()
         {
-            Console.WriteLine("New Message: " + msg);
+            Separator = "============";
+        }
+
+        public void UpdateUserMsg(string m)
+        {
+            _stationMsg = m;
+            DisplayMessage();
+        }
+
+        public void UpdateChargeMsg(string m)
+        {
+            _chargeMsg = m;
+            DisplayMessage();
+        }
+
+        public void DisplayMessage()
+        {
+            Console.WriteLine("============");
+            Console.WriteLine(_stationMsg);
+            Console.WriteLine(_chargeMsg);
+            Console.WriteLine("============");
         }
     }
 }
