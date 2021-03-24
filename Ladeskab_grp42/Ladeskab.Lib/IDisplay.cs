@@ -8,6 +8,8 @@ namespace Ladeskab.Lib
 {
     public interface IDisplay
     {
-        public void DisplayMessage(string msg);
+        public void UpdateUserMsg(string m);
+        public void UpdateChargeMsg(string m);
+        public void DisplayMessage();
     }
 }
