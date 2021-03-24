@@ -48,7 +48,7 @@ namespace Ladeskab.Lib
         public bool OnDoorClose()
         {
             // Door closed or locked = kan ikke close  
-            if (!doorOpen ) return doorOpen;
+            if (!doorOpen || !doorUnlocked) return doorOpen;
 	        
 	        doorOpen = false;
 	        Notify("Door closed");

@@ -19,9 +19,9 @@ namespace Ladeskab.Unit.Test
 		#region ClosedDoorTests
 		//Test der lukker door
 
-		//Close Door
+		//Close - a Open door
 		[Test]
-		public void DoorUnitTest_CloseDoor_DoorClosed()
+		public void DoorUnitTest_CloseOpenDoor_doorOpenFalse()
 		{
 			//Arrange
 			var result = _uut.OnDoorOpen();  // doorOpen True
@@ -32,35 +32,51 @@ namespace Ladeskab.Unit.Test
 			Assert.IsFalse(result);  //Expected false
 		}
 
-		// Close Door
+		// Close - a closed door
 		[Test]
-		public void DoorUnitTest_onDoorClose_Notify()
+		public void DoorUnitTest_CloseClosedDoor_doorOpenFalse()
 		{
-			//arrange  - Open door so we can close door with notify
-			_uut.OnDoorClose(); //  doorOpen = false
+			//arrange
 			//Act
-			_uut.OnDoorClose();  // doorOpen = false
+			var result = _uut.OnDoorClose();  // doorOpen = false
 			//Assert
-
-			Assert.That(_uut.OnDoorClose, Is.False);
-
+			Assert.IsFalse(result);  //Expected false
 		}
 
 
-		//Test UnlockDoor is unlocked
+		// Close a unlocked door
 		[Test]
-		public void DoorUnitTest_unLockClosedDoor_DoorIsLocked()
+		public void DoorUnitTest_CloseUnlockedDoor_doorOpenFalse()
 		{
 			// Arrange
-			_uut.OnDoorClose();
+			_uut.UnlockDoor(); //  Doorunlocked = true
+
 			//Act
-			bool result = _uut.UnlockDoor(); //  Doorunlocked = true
+			bool result = _uut.OnDoorClose();  //doorOpen False
 			//Assert
 
-			Assert.IsTrue(result);  // Expected = True
+			Assert.IsFalse(result);  // Expected = false
 
 		}
-		//Test LockDoor is locked
+
+		// Close a locked door
+		[Test]
+		public void DoorUnitTest_CloseLockedDoor_DoorIsLocked()
+		{
+			// Arrange
+			
+			//I forvejen lukket og låst i default
+			 
+			//Act
+
+			//Assert
+			Assert.IsFalse(_uut.OnDoorClose());
+
+		}
+
+
+
+		//Test OnDoorClose Notify 
 		[Test]
 		public void DoorUnitTest_NotifyTestCloseDoor_DoorClosed()
 		{
@@ -82,24 +98,73 @@ namespace Ladeskab.Unit.Test
 		#region OpenDoorTests
 
 
-		// Open Door
+		// Open Closed Door
 		[Test]
-		public void DoorUnitTest_OpenDoor_DoorOpen()
+		public void DoorUnitTest_OpenClosedDoor_doorOpenTrue()
 		{
 			//Arrange
-
+			_uut.UnlockDoor(); // Unlock door så den kan åbnes
 			//Act
-			var result = _uut.OnDoorClose();  // doorOpen False
+			_uut.OnDoorClose();  // Hav døren være lukket så den kan åbnes
+
+			var result = _uut.OnDoorOpen();  // doorOpen True
+
+			//Assert
+			Assert.IsTrue(result);  //Expected true
+		}
+
+		// Open Open door
+		[Test]
+		public void DoorUnitTest_OpenOpenDoor_doorOpenTrue()
+		{
+			//Arrange
+			_uut.UnlockDoor();
+			//Act
+			var result = _uut.OnDoorOpen();  // doorOpen True
 			result = _uut.OnDoorOpen();  // doorOpen True
 
 			//Assert
-			Assert.IsFalse(result);  //Expected true
+			Assert.IsTrue(result);  //Expected true
 		}
+
+
+		// Open a unlocked door
+		[Test]
+		public void DoorUnitTest_OpenUnlockedDoor_doorOpenTrue()
+		{
+			// Arrange
+			_uut.UnlockDoor(); //  Doorunlocked = true
+
+
+			//Act
+			bool result = _uut.OnDoorOpen();  //doorOpen True
+			//Assert
+
+			Assert.IsTrue(result);  // Expected = True
+
+		}
+
+		// Open a locked door
+		[Test]
+		public void DoorUnitTest_OpenLockedDoor_doorOpenTrue()
+		{
+			// Arrange
+			
+			//Already locked
+
+			//Act
+			bool result = _uut.OnDoorOpen();  //doorOpen false fordi locked
+			//Assert
+
+			Assert.IsFalse(result);  // Expected = false
+
+		}
+
 
 
 		// Door Open
 		[Test]
-		public void DoorUnitTest_onDoorOpen_Notify()
+		public void DoorUnitTest_NotifyTestOpenDoor_Notify()
 		{
 			//arrange  - Open door so we can close door with notify
 			//_uut.OnDoorClose();  //Notify door open
