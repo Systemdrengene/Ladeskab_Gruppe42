@@ -7,6 +7,7 @@ using Ladeskab.Lib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using NSubstitute;
+using System.IO;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Ladeskab.Unit.Test
@@ -23,16 +24,26 @@ namespace Ladeskab.Unit.Test
         }
 
         [Test]
-        public void FileLoggerUnitTest_NoFileWrite_NewFileCreated()
+        public void FileLoggerUnitTest_NoFileExistWrite_NewFileWrittenTo()
         {
             var fakeFileWriter = Substitute.For<FileWriter>();
             var fakeFileReader = Substitute.For<FileReader>();
 
             _uut = new FileLogger(fakeFileWriter, fakeFileReader);
 
+            //fakeFileWriter.WriteFile("$(SolutionDir)/log.txt", "hello")
 
+            _uut.LogFile("This is log 1");
+            _uut.LogFile("This is log 2");
+            _uut.LogFile("This is log 3");
 
-            Console.getCurrentdirectory
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+
+            Assert.AreEqual(File.Exists("$(SolutionDir)/log.txt"), true);
+
+            //Console.getCurrentdirectory
 
             //Open() for at se om findes
             //
@@ -41,7 +52,38 @@ namespace Ladeskab.Unit.Test
             //Assert does exist
         }
 
+        [Test]
+        public void FileLoggerUnitTest_FileExistWrite_FileWrittenTo()
+        {
+            var fakeFileWriter = Substitute.For<FileWriter>();
+            var fakeFileReader = Substitute.For<FileReader>();
+
+            _uut = new FileLogger(fakeFileWriter, fakeFileReader);
+            File.Create("$(SolutionDir)/log.txt");
 
 
+            _uut.LogFile("This is log 1");
+            _uut.LogFile("This is log 2");
+            _uut.LogFile("This is log 3");
+
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+
+            Assert.AreEqual(File.Exists("$(SolutionDir)/log.txt"), true);
+
+        }
+
+        [Test]
+        public void FileLoggerUnitTest_NoFileExistRead_NewFileCreated()
+        {
+
+        }
+
+        [Test]
+        public void FileLoggerUnitTest_FileExistRead_NewFileCreated()
+        {
+
+        }
     }
 }
