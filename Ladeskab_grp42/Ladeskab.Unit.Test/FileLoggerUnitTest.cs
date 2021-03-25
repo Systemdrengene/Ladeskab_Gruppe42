@@ -16,6 +16,8 @@ namespace Ladeskab.Unit.Test
     class FileLoggerUnitTest
     {
         private FileLogger _uut;
+        private string testlog = "testlog.txt";
+        private string testpath = "./testlog.txt";
 
         [SetUp]
         public void Setup()
@@ -31,7 +33,7 @@ namespace Ladeskab.Unit.Test
 
             _uut = new FileLogger(FileWriter, FileReader);
 
-            //fakeFileWriter.WriteFile("$(SolutionDir)/log.txt", "hello")
+            //fakeFileWriter.WriteFile("$(SolutionDir)/testlog, "hello")
 
             _uut.LogFile("This is log 1");
             _uut.LogFile("This is log 2");
@@ -41,10 +43,10 @@ namespace Ladeskab.Unit.Test
             FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
             FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
 
-            Assert.AreEqual(File.Exists("$(SolutionDir)/log.txt"), true);
+            Assert.AreEqual(File.Exists(testpath), true);
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
-            File.Delete("./.log.txt");
+            File.Delete(testpath);
         }
 
         [Test]
@@ -54,7 +56,7 @@ namespace Ladeskab.Unit.Test
             var FileReader = new FileReader();
 
             _uut = new FileLogger(FileWriter, FileReader);
-            File.Create("./log.txt");
+            File.Create(testpath);
 
             _uut.LogFile("This is log 1");
             _uut.LogFile("This is log 2");
@@ -66,7 +68,7 @@ namespace Ladeskab.Unit.Test
 
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
-            File.Delete("./log.txt");
+            File.Delete(testpath);
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 3");
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
-            File.Delete("./log.txt");
+            File.Delete(testpath);
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace Ladeskab.Unit.Test
             var FileReader = new FileReader();
 
             _uut = new FileLogger(FileWriter, FileReader);
-            File.Create("./log.txt");
+            File.Create(testpath);
 
             _uut.LogFile("This is log 1");
             Assert.AreEqual(_uut.ReadFile(), "This is log 1");
@@ -107,7 +109,7 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 3");
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
-            File.Delete("./log.txt");
+            File.Delete(testpath);
         }
 
         public void FileLoggerUnitTest_FileExistRead_FileRead()
@@ -116,10 +118,10 @@ namespace Ladeskab.Unit.Test
             var FileReader = new FileReader();
 
             _uut = new FileLogger(FileWriter, FileReader);
-            File.Create("./log.txt");
+            File.Create(testpath);
             _uut.ReadFile();
 
-            FileReader.Received().ReadFile("./log.txt");
+            FileReader.Received().ReadFile(testpath);
         }
 
         public void FileLoggerUnitTest_NoFileExistRead_FileRead()
@@ -130,7 +132,7 @@ namespace Ladeskab.Unit.Test
             _uut = new FileLogger(FileWriter, FileReader);
             _uut.ReadFile();
 
-            FileReader.Received().ReadFile("./log.txt");
+            FileReader.Received().ReadFile(testpath);
         }
     }
 }
