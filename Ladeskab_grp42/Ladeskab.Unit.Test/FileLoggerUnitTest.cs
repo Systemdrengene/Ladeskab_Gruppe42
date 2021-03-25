@@ -28,10 +28,10 @@ namespace Ladeskab.Unit.Test
         [Test]
         public void FileLoggerUnitTest_NoFileExistWrite_NewFileWrittenTo()
         {
-            var FileWriter = new FileWriter();
+            var fakeFileWriter = Substitute.For<FileWriter>();
             var FileReader = new FileReader();
 
-            _uut = new FileLogger(FileWriter, FileReader);
+            _uut = new FileLogger(fakeFileWriter, FileReader);
 
             //fakeFileWriter.WriteFile("$(SolutionDir)/testlog, "hello")
 
@@ -39,9 +39,9 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
 
             Assert.AreEqual(File.Exists(testpath), true);
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
@@ -52,7 +52,7 @@ namespace Ladeskab.Unit.Test
         [Test]
         public void FileLoggerUnitTest_FileExistWrite_FileWrittenTo()
         {
-            var FileWriter = new FileWriter();
+            var fakeFileWriter = Substitute.For<FileWriter>();
             var FileReader = new FileReader();
 
             _uut = new FileLogger(FileWriter, FileReader);
