@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Ladeskab.Lib
 {
-    public class FileWriter
+    public class FileWriter : IFileWriter
     {
         public void WriteFile(string path, string logmsg)
         {

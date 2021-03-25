@@ -10,7 +10,7 @@ namespace Ladeskab.Lib
     public class StationControl : IObserver
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        private enum LadeskabState
+        public enum LadeskabState
         {
             Available,
             Locked,
@@ -18,7 +18,7 @@ namespace Ladeskab.Lib
         };
 
         // Her mangler flere member variable
-        private LadeskabState _state;
+        public LadeskabState _state { get; set; }
         private IDoor _door;
         private IChargeControl _charger;
         private IDisplay _display;
@@ -43,7 +43,7 @@ namespace Ladeskab.Lib
         {
             switch(msg)
             {
-                case "Door opened":
+                case "Door opened":  
                     _display.UpdateUserMsg("Tilslut telefon");
                     break;
                 case "Door closed":
@@ -57,6 +57,7 @@ namespace Ladeskab.Lib
             }
         }
 
+
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
         private void RfidDetected(int id)
         {
@@ -69,24 +70,26 @@ namespace Ladeskab.Lib
                         _door.LockDoor();
                         _charger.StartCharge();
                         _oldId = id;
-                        filelog.LogFile("Skab låst med RFID: " + id);
+                        filelog.LogFile( "Skab låst med RFID: " + id);
                         //using (var writer = File.AppendText(logFile))
                         //{
                         //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
                         //}
-
-                        Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+                        _display.UpdateUserMsg("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+                        // Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                         _state = LadeskabState.Locked;
                     }
                     else
                     {
-                        Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                        _display.UpdateUserMsg("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                        //Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
                     }
 
                     break;
 
                 case LadeskabState.DoorOpen:
-                    Console.WriteLine("Dør er allerede åbnet med et RF-ID");
+                    _display.UpdateUserMsg("Dør er allerede åbnet med et RF-ID");
+                    //Console.WriteLine("Dør er allerede åbnet med et RF-ID");
                     break;
 
                 case LadeskabState.Locked:
@@ -101,16 +104,34 @@ namespace Ladeskab.Lib
                         //    writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
                         //}
 
-                        Console.WriteLine("Tag din telefon ud af skabet og luk døren");
+                        _display.UpdateUserMsg("Tag din telefon ud af skabet og luk døren");
+                        //Console.WriteLine("Tag din telefon ud af skabet og luk døren");
                         _state = LadeskabState.Available;
                     }
                     else
                     {
-                        Console.WriteLine("Forkert RFID tag");
+                        _display.UpdateUserMsg("Forkert RFID tag");
+                        //Console.WriteLine("Forkert RFID tag");
                     }
 
                     break;
             }
+        }
+
+        private void DoorEventHandler()  //eventuelt handler
+        {
+	        switch (_state)
+	        {
+                case LadeskabState.Available:
+                    
+	                break;
+                case LadeskabState.DoorOpen:
+
+	                break;
+                case LadeskabState.Locked:
+
+	                break;
+	        }
         }
 
         // Her mangler de andre trigger handlere

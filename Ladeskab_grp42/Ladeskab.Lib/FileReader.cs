@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Ladeskab.Lib
 {
-    public class FileReader
+    public class FileReader: IFileReader
     {
         public string ReadFile(string path)
         {
