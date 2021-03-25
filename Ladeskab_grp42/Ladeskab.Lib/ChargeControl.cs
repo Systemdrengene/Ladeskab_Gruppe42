@@ -23,9 +23,9 @@ namespace Ladeskab.Lib
 		private enum ChargerState
 		{
 			Idle,
+			FullyCharged,
 			IsCharging,
-			OverCurrentFail,
-			FullyCharged
+			OverCurrentFail
 		};
 
 		//Ladesituationer 
@@ -83,24 +83,26 @@ namespace Ladeskab.Lib
 		//EvalChargeState
 		private void EvalChargeState()
 		{
-			if (_chargeCurrent > MaximumChargeCurrent) //If chargecurrent over maxcharge 
+			if (_chargeCurrent > MaximumChargeCurrent) // chargeCurrent > 500.00 mA
 			{
-				_usbCharger.StartCharge();
-				_chargerState = ChargerState.OverCurrentFail;
+				_usbCharger.StopCharge();
+				_chargerState = ChargerState.OverCurrentFail;  // 3
 			}
-			else if (_chargeCurrent <= MaximumChargeCurrent && _chargeCurrent > MinimumChargeCurrent) // Indenfor 5mA og 500 mA
+			else if (_chargeCurrent <= MaximumChargeCurrent 
+			         && _chargeCurrent > MinimumChargeCurrent) // 500 mA > chargecurrent > 5 mA
 			{
-				_chargerState = ChargerState.IsCharging;
+				_chargerState = ChargerState.IsCharging;  //1
 			}
-			else if (_chargeCurrent > ZeroChargeCurrent && _chargeCurrent <= MinimumChargeCurrent) // Fully charged
+			else if (_chargeCurrent > ZeroChargeCurrent 
+			         && _chargeCurrent <= MinimumChargeCurrent) // Fully charged
 			{
-				_chargerState = ChargerState.FullyCharged;
+				_chargerState = ChargerState.FullyCharged; // 2
 			}
 			else
 			{
 				if (_chargerState == ChargerState.OverCurrentFail) return;
 
-				_chargerState = ChargerState.Idle;
+				_chargerState = ChargerState.Idle;  // 0
 			}
 
 			ReadChargerState = (int)_chargerState;
@@ -112,19 +114,19 @@ namespace Ladeskab.Lib
 			switch (_chargerState)
 			{
 				case ChargerState.OverCurrentFail:   //State charge fail
-					_display.UpdateUserMsg("Current failed");
+					_display.UpdateChargeMsg("Current failed");
 					_latestState = ChargerState.OverCurrentFail;
 					break;
 				case ChargerState.FullyCharged:
-					_display.UpdateUserMsg("Fully Charged");
+					_display.UpdateChargeMsg("Fully Charged");
 					_latestState = ChargerState.FullyCharged;
 					break;
 				case ChargerState.IsCharging:
-					_display.UpdateUserMsg("Is Charging");
+					_display.UpdateChargeMsg("Is Charging");
 					_latestState = ChargerState.IsCharging;
 					break;
 				case ChargerState.Idle:
-					_display.UpdateUserMsg("Idle");
+					_display.UpdateChargeMsg("Idle");
 					_latestState = ChargerState.Idle;
 					break;
 				default:
