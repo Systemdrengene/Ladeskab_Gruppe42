@@ -51,7 +51,7 @@ namespace Ladeskab.Unit.Test
             var obs = Substitute.For<IObserver>();
             _uut.Attach(obs);
             _uut.OnRfidRead(2);
-            obs.ReceivedWithAnyArgs().Update(_uut, "RFID");
+            obs.Received(1).Update(_uut, "RFID");
             Assert.That(_uut.GetID(), Is.EqualTo(2));
         }
     }
