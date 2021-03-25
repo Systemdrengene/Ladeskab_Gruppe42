@@ -1,12 +1,38 @@
-﻿using System;
+﻿using NUnit.Framework;
+using Ladeskab.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ladeskab.Unit.Test
+namespace Ladeskab.Lib.Test
 {
-	class ChargeControlUnitTest
+	[TestFixture()]
+	public class ChargeControlUnitTest
 	{
+		[Test()]
+		public void _ChargeControlUnitTest()
+		{
+			// Assert.Fail();
+		}
+
+		[Test()]
+		public void IsConnectedUnitTest()
+		{
+			// Assert.Fail();
+		}
+
+		[Test()]
+		public void StartChargeUnitTest()
+		{
+			// Assert.Fail();
+		}
+
+		[Test()]
+		public void StopChargeUnitTest()
+		{
+			// Assert.Fail();
+		}
 	}
 }

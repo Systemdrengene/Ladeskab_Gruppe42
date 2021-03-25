@@ -17,6 +17,7 @@ namespace Ladeskab.Lib
 
         public void OnRfidRead(int id)
         {
+            Id = id;
             Notify("RFID");
         }
         public int GetID()

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    public abstract class Subject
+    public class Subject
     {
         private List<IObserver> _subjects = new List<IObserver>();
 

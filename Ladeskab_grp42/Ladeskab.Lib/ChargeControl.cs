@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
+
 	public interface IChargeControl
 	{
 		void StartCharge();
@@ -13,7 +14,7 @@ namespace Ladeskab.Lib
 		bool IsConnected();
 	}
 
-	class ChargeControl : IChargeControl
+	public class ChargeControl : IChargeControl
 	{
 		//Forbindelser
 		private readonly IUsbCharger _usbCharger;
@@ -111,19 +112,19 @@ namespace Ladeskab.Lib
 			switch (_chargerState)
 			{
 				case ChargerState.OverCurrentFail:   //State charge fail
-					_display.DisplayMessage("Current failed");
+					_display.UpdateUserMsg("Current failed");
 					_latestState = ChargerState.OverCurrentFail;
 					break;
 				case ChargerState.FullyCharged:
-					_display.DisplayMessage("Fully Charged");
+					_display.UpdateUserMsg("Fully Charged");
 					_latestState = ChargerState.FullyCharged;
 					break;
 				case ChargerState.IsCharging:
-					_display.DisplayMessage("Is Charging");
+					_display.UpdateUserMsg("Is Charging");
 					_latestState = ChargerState.IsCharging;
 					break;
 				case ChargerState.Idle:
-					_display.DisplayMessage("Idle");
+					_display.UpdateUserMsg("Idle");
 					_latestState = ChargerState.Idle;
 					break;
 				default:
