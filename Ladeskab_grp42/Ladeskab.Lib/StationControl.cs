@@ -118,22 +118,42 @@ namespace Ladeskab.Lib
             }
         }
 
-        private void DoorEventHandler()  //eventuelt handler
+       // Her mangler de andre trigger handlere
+        private void DoorEventHandler(DoorEventArgs d)  //eventuelt handler
         {
 	        switch (_state)
 	        {
                 case LadeskabState.Available:
-                    
+
+	                if (d.DoorState == true)
+	                {
+		                _state = LadeskabState.DoorOpen;
+                        _display.UpdateUserMsg("Tilslut Telefon");
+	                }
+	                else
+	                {
+                        //throw execption?
+	                }
 	                break;
+
                 case LadeskabState.DoorOpen:
-
+	                if (d.DoorState == false)
+	                {
+		                _state = LadeskabState.Available;
+                        _display.UpdateUserMsg("Indlæs RFID");
+	                }
+	                else
+	                {
+		                //throw Exception
+	                }
 	                break;
-                case LadeskabState.Locked:
 
+                case LadeskabState.Locked:
+                    //throw Exception
 	                break;
 	        }
         }
 
-        // Her mangler de andre trigger handlere
+ 
     }
 }

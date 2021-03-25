@@ -31,6 +31,13 @@ namespace Ladeskab.Unit.Test
 			_uut = new StationControl(_fakeChargeControl, _fakeDoor, _fakeRfidReader, _fakeDisplay, _fileLogger);
 		}
 
+		//Eventuel test af dooreventhandler
+		#region DoorEventHandler() 
+
+		
+
+		#endregion
+
 		#region  RFIDDetected
 
 		//Test låsning af door med RFid event
