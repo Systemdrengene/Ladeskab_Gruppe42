@@ -20,7 +20,7 @@ namespace Ladeskab.Lib
 
         public void LogFile(string logmsg)
         {
-            string path = "$(SolutionDir)/log.txt";
+            var path = "./log.txt";
 
             _filewriter.WriteFile(path, logmsg);
         }

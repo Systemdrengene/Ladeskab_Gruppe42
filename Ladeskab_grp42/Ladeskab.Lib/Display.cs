@@ -31,10 +31,10 @@ namespace Ladeskab.Lib
 
         public void DisplayMessage()
         {
-            Console.WriteLine("============");
+            Console.WriteLine(this.Separator);
             Console.WriteLine(_stationMsg);
             Console.WriteLine(_chargeMsg);
-            Console.WriteLine("============");
+            Console.WriteLine(this.Separator);
         }
     }
 }

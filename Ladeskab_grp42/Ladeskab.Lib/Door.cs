@@ -10,7 +10,7 @@ namespace Ladeskab.Lib
     {
         #region Variables
 
-        private bool doorUnlocked = false;
+        private bool doorUnlocked = true;
         private bool doorOpen = false;
         #endregion
 
@@ -41,7 +41,7 @@ namespace Ladeskab.Lib
             if (doorOpen || !doorUnlocked) return doorOpen;
 	        
 	        doorOpen = true;
-			Notify("Door opened");
+            Notify("Door opened");
 			return doorOpen;
         }
 
