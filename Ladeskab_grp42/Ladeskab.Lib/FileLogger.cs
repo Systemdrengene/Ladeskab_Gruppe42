@@ -27,7 +27,7 @@ namespace Ladeskab.Lib
 
         public string ReadFile()
         {
-            string path = "$(SolutionDir)/log.txt";
+            string path = "./log.txt";
 
             return _filereader.ReadFile(path);
         }
