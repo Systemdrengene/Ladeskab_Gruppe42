@@ -149,11 +149,11 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_OpenLockedDoor_doorOpenTrue()
 		{
 			// Arrange
-			
-			//Already locked
+            _uut.LockDoor();
 
 			//Act
-			bool result = _uut.OnDoorOpen();  //doorOpen false fordi locked
+            bool result = _uut.OnDoorOpen();  //doorOpen false fordi locked
+
 			//Assert
 
 			Assert.IsFalse(result);  // Expected = false

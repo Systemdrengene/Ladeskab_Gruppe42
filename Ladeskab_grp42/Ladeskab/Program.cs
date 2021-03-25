@@ -1,5 +1,6 @@
 ﻿using System;
 using Ladeskab.Lib;
+using UsbSimulator;
 
 namespace Ladeskab 
 { 
@@ -7,9 +8,17 @@ namespace Ladeskab
     {
         static void Main(string[] args)
         {
-            Door door = new Door();
-            RFIDReader rfidReader = new RFIDReader();
             // Assemble your system here from all the classes
+            Door door = new();
+            RFIDReader rfidReader = new();
+            Display display = new();
+            UsbChargerSimulator usbCharger = new();
+            FileLogger fileLogger = new();
+            ChargeControl chargeControl = new(display, usbCharger);
+            StationControl stationControl = new(chargeControl, door, rfidReader, display, fileLogger);
+            
+            door.Attach(stationControl);
+            rfidReader.Attach(stationControl);
 
             bool finish = false;
             do
@@ -44,7 +53,6 @@ namespace Ladeskab
                     default:
                         break;
                 }
-
             } while (!finish);
         }
     }
