@@ -55,16 +55,16 @@ namespace Ladeskab.Unit.Test
             var fakeFileWriter = Substitute.For<FileWriter>();
             var FileReader = new FileReader();
 
-            _uut = new FileLogger(FileWriter, FileReader);
+            _uut = new FileLogger(fakeFileWriter, FileReader);
             File.Create(testpath);
 
             _uut.LogFile("This is log 1");
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
 
             Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
