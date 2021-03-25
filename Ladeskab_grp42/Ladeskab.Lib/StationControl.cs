@@ -43,11 +43,13 @@ namespace Ladeskab.Lib
         {
             switch(msg)
             {
-                case "Door opened":  
-                    _display.UpdateUserMsg("Tilslut telefon");
+                case "Door opened":
+	                DoorEventHandler();
+                    //_display.UpdateUserMsg("Tilslut telefon");
                     break;
                 case "Door closed":
-                    _display.UpdateUserMsg("Indlæs RFID");
+	                DoorEventHandler();
+                    //_display.UpdateUserMsg("Indlæs RFID");
                     break;
                 case "RFID":
                     _display.UpdateUserMsg("RFID has been read");
@@ -119,13 +121,14 @@ namespace Ladeskab.Lib
         }
 
        // Her mangler de andre trigger handlere
-        private void DoorEventHandler(DoorEventArgs d)  //eventuelt handler
+        private void DoorEventHandler()  //eventuelt handler
         {
+
 	        switch (_state)
 	        {
-                case LadeskabState.Available:
+                case LadeskabState.Available: 
 
-	                if (d.DoorState == true)
+	                if (_door.OnDoorOpen() == true)  //Kan åbne door - Ulåst
 	                {
 		                _state = LadeskabState.DoorOpen;
                         _display.UpdateUserMsg("Tilslut Telefon");
@@ -137,19 +140,19 @@ namespace Ladeskab.Lib
 	                break;
 
                 case LadeskabState.DoorOpen:
-	                if (d.DoorState == false)
+	                if (_door.OnDoorClose() == false)  // Door er closed og ulåst
 	                {
-		                _state = LadeskabState.Available;
+		                _state = LadeskabState.Available; 
                         _display.UpdateUserMsg("Indlæs RFID");
 	                }
 	                else
 	                {
-		                //throw Exception
+		                //throw Exception  Kan ikke åbne door
 	                }
 	                break;
 
                 case LadeskabState.Locked:
-                    //throw Exception
+                    //throw Exception  // Kan ikke åbne door hvis låst
 	                break;
 	        }
         }

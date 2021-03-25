@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-	public class DoorEventArgs : EventArgs
-	{
-        //Door state til StationControl - Open=True and Closed=False
-        public bool DoorState { get; set; }
-	}
+
 
     public interface IDoor
     {

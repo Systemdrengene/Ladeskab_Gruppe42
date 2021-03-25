@@ -10,10 +10,6 @@ namespace Ladeskab.Lib
     {
         #region Variables
 
-        private DoorEventArgs State = new DoorEventArgs()
-        {
-            DoorState = false
-        };
 
         private bool doorUnlocked = true;
         private bool doorOpen = false;
@@ -44,8 +40,7 @@ namespace Ladeskab.Lib
         {
             // Already Open or locked = kan ikke doorOpen
             if (doorOpen || !doorUnlocked) return doorOpen;
-            State.DoorState = true;
-	        doorOpen = true;
+            doorOpen = true;
             Notify("Door opened");
 			return doorOpen;
         }
@@ -54,8 +49,7 @@ namespace Ladeskab.Lib
         {
             // Door closed or locked = kan ikke close  
             if (!doorOpen || !doorUnlocked) return doorOpen;
-            State.DoorState = false;
-	        doorOpen = false;
+            doorOpen = false;
 	        Notify("Door closed");
 	        return doorOpen;
         }
