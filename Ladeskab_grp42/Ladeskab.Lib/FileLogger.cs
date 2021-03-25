@@ -9,14 +9,27 @@ namespace Ladeskab.Lib
 {
     public class FileLogger
     {
+        FileWriter _filewriter;
+        FileReader _filereader;
+
+        public FileLogger(FileWriter filewriter, FileReader filereader)
+        {
+            _filewriter = filewriter;
+            _filereader = filereader;
+        }
+
         public void LogFile(string logmsg)
         {
             string path = "$(SolutionDir)/log.txt";
 
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine("New log " + DateTime.Now + " : " + logmsg);
-            }
+            _filewriter.WriteFile(path, logmsg);
+        }
+
+        public void ReadFile()
+        {
+            string path = "$(SolutionDir)/log.txt";
+
+            _filereader.ReadFile(path);
         }
     }
 }
