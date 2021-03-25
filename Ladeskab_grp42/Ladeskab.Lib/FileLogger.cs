@@ -25,11 +25,11 @@ namespace Ladeskab.Lib
             _filewriter.WriteFile(path, logmsg);
         }
 
-        public void ReadFile()
+        public string ReadFile()
         {
             string path = "$(SolutionDir)/log.txt";
 
-            _filereader.ReadFile(path);
+            return _filereader.ReadFile(path);
         }
     }
 }

@@ -26,10 +26,10 @@ namespace Ladeskab.Unit.Test
         [Test]
         public void FileLoggerUnitTest_NoFileExistWrite_NewFileWrittenTo()
         {
-            var fakeFileWriter = Substitute.For<FileWriter>();
-            var fakeFileReader = Substitute.For<FileReader>();
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
 
-            _uut = new FileLogger(fakeFileWriter, fakeFileReader);
+            _uut = new FileLogger(FileWriter, FileReader);
 
             //fakeFileWriter.WriteFile("$(SolutionDir)/log.txt", "hello")
 
@@ -37,53 +37,100 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
 
             Assert.AreEqual(File.Exists("$(SolutionDir)/log.txt"), true);
+            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
-            //Console.getCurrentdirectory
-
-            //Open() for at se om findes
-            //
-            //Bliver fil oprettet
-            //read funktion så kan om er skrevet rigtigt
-            //Assert does exist
+            File.Delete("$(SolutionDir) / log.txt");
         }
 
         [Test]
         public void FileLoggerUnitTest_FileExistWrite_FileWrittenTo()
         {
-            var fakeFileWriter = Substitute.For<FileWriter>();
-            var fakeFileReader = Substitute.For<FileReader>();
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
 
-            _uut = new FileLogger(fakeFileWriter, fakeFileReader);
+            _uut = new FileLogger(FileWriter, FileReader);
             File.Create("$(SolutionDir)/log.txt");
-
 
             _uut.LogFile("This is log 1");
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
+            FileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
 
-            Assert.AreEqual(File.Exists("$(SolutionDir)/log.txt"), true);
+            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
 
+            File.Delete("$(SolutionDir) / log.txt");
         }
 
         [Test]
-        public void FileLoggerUnitTest_NoFileExistRead_NewFileCreated()
+        public void FileLoggerUnitTest_NoFileExistWriteRead_NewFileRead()
         {
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
 
+            _uut = new FileLogger(FileWriter, FileReader);
+
+            _uut.LogFile("This is log 1");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 1");
+
+            _uut.LogFile("This is log 2");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 2");
+
+            _uut.LogFile("This is log 3");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+
+            File.Delete("$(SolutionDir) / log.txt");
         }
 
         [Test]
-        public void FileLoggerUnitTest_FileExistRead_NewFileCreated()
+        public void FileLoggerUnitTest_FileExistWriteRead_FileRead()
         {
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
 
+            _uut = new FileLogger(FileWriter, FileReader);
+            File.Create("$(SolutionDir)/log.txt");
+
+            _uut.LogFile("This is log 1");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 1");
+
+            _uut.LogFile("This is log 2");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 2");
+
+            _uut.LogFile("This is log 3");
+            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+
+            File.Delete("$(SolutionDir) / log.txt");
+        }
+
+        public void FileLoggerUnitTest_FileExistRead_FileRead()
+        {
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
+
+            _uut = new FileLogger(FileWriter, FileReader);
+            File.Create("$(SolutionDir)/log.txt");
+            _uut.ReadFile();
+
+            FileReader.Received().ReadFile("$(SolutionDir)/log.txt");
+        }
+
+        public void FileLoggerUnitTest_NoFileExistRead_FileRead()
+        {
+            var FileWriter = new FileWriter();
+            var FileReader = new FileReader();
+
+            _uut = new FileLogger(FileWriter, FileReader);
+            _uut.ReadFile();
+
+            FileReader.Received().ReadFile("$(SolutionDir)/log.txt");
         }
     }
 }
