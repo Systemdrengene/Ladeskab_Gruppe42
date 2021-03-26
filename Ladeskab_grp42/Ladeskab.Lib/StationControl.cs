@@ -140,6 +140,7 @@ namespace Ladeskab.Lib
 	                }
 	                else
 	                {
+                        _display.UpdateUserMsg("Door cannot close when state is Available");
                         //throw execption?
 	                }
 	                break;
@@ -152,13 +153,15 @@ namespace Ladeskab.Lib
 	                }
 	                else
 	                {
-		                //throw Exception  Kan ikke åbne door
-	                }
+		                _display.UpdateUserMsg("Door cannot open when state = DoorOpen");
+                        //throw Exception  Kan ikke åbne door
+                    }
 	                break;
 
                 case LadeskabState.Locked:
+	                _display.UpdateUserMsg("Door cannot open when state = Locked");
                     //throw Exception  // Kan ikke åbne door hvis låst
-	                break;
+                    break;
 	        }
         }
 

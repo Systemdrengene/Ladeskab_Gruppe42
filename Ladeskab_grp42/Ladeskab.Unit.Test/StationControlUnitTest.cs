@@ -32,9 +32,122 @@ namespace Ladeskab.Unit.Test
 		}
 
 		//Eventuel test af dooreventhandler
-		#region DoorEventHandler() 
+		#region DoorEventHandler()
 
-		
+		//Test door event at door open
+		[Test]
+		public void DoorEventHandler_DoorOpenStateAvailable_stateChangeToDoorOpen()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.Available;
+
+			// Act - Raise event in fake
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() {DoorState = true});
+
+			// Assert
+			Assert.That(_uut._state,Is.EqualTo(StationControl.LadeskabState.DoorOpen));
+
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorOpenStateAvailable_DisplayCallOnce()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.Available;
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() {DoorState = true});
+			//Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Tilslut Telefon");
+			_fakeDisplay.Received(0).UpdateUserMsg("Indlæs RFID");	
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorOpenStateDoorOpen_AlreadyOpen()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.DoorOpen;
+
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = true });
+
+			//Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Door cannot open when state = DoorOpen");
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorOpenStateLocked_CannotOpen()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.Locked;
+
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = true });
+
+			//Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Door cannot open when state = Locked");
+		}
+
+		//Test når State Available men DoorState = False 
+		[Test]
+		public void DoorEventHandler_DoorClosedStateAvailable_CannotOpen()
+		{
+			// Arrange
+			_uut._state = StationControl.LadeskabState.Available;
+
+			// Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = false });
+
+			// Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Door cannot close when state is Available");
+
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorClosedStateDoorOpen_StateChangeToAvailable()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.DoorOpen;
+
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = false });
+
+			//Assert
+			Assert.That(_uut._state, Is.EqualTo(StationControl.LadeskabState.Available));
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorClosedStateDoorOpen_DisplayCallOnce()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.DoorOpen;
+
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = false });
+
+			//Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Indlæs RFID");
+		}
+
+		[Test]
+		public void DoorEventHandler_DoorClosedStateLocked_CantOpen()
+		{
+			//Arrange
+			_uut._state = StationControl.LadeskabState.Locked;
+
+			//Act
+			_fakeDoor.DoorEvent +=
+				Raise.EventWith(new DoorEventArgs() { DoorState = false });
+
+			//Assert
+			_fakeDisplay.Received(1).UpdateUserMsg("Door cannot open when state = Locked");
+		}
 
 		#endregion
 
@@ -96,9 +209,10 @@ namespace Ladeskab.Unit.Test
 			_uut._state = StationControl.LadeskabState.Available;
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act -- EVENT Ligesom overstående test
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 1 });
 			//Assert
-			_fakeDisplay.Received(1).DisplayMessage();
+			_fakeDisplay.Received(1).UpdateUserMsg("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
 		}
 
 		//Tester LadeskabState.Available ->> LadeskabState.Locked
@@ -109,7 +223,8 @@ namespace Ladeskab.Unit.Test
 			_uut._state = StationControl.LadeskabState.Available;
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act -- EVENT Ligesom overstående test
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 1 });
 
 			//Assert -- Available state -> locked state
 			Assert.That(_uut._state,Is.EqualTo(StationControl.LadeskabState.Locked));
@@ -123,7 +238,8 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(false);
 
 			// Act - Raise event in fake
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 1 });
 
 			// Assert
 			_fakeDisplay.Received(1).UpdateUserMsg("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
@@ -137,8 +253,9 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(false);
 
 			//Act -- RFID Event
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 1 });
 
-	
 			// Assert
 			_fakeDisplay.Received(1).UpdateUserMsg("Dør er allerede åbnet med et RF-ID");
 		}
@@ -154,7 +271,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event RFIDDetected
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id1 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
 			// Assert -- Eventuelt to forskellige, da det to forskellige beskeder ikke sikker
 			_fakeDisplay.Received(res).UpdateUserMsg("Tag din telefon ud af skabet og luk døren");
@@ -169,7 +289,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
-	
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id1 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
 			// Assert
 			_fakeChargeControl.Received(res).StopCharge();
@@ -184,7 +307,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id1 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 			// Assert
 			_fakeDoor.Received(res).UnlockDoor();
 		}
@@ -198,7 +324,11 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
-
+			// Act - Raise event in fake
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id1 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
 			// Assert
 			_fileLogger.Received(res).ReadFile();
@@ -212,7 +342,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 12 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 12 });
 			// Assert
 			Assert.That(_uut._state, Is.EqualTo(StationControl.LadeskabState.Available));
 		}
@@ -224,6 +357,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 12 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 13 });
 
 			// Assert
 			Assert.That(_uut._state, Is.EqualTo(StationControl.LadeskabState.Locked));
@@ -236,7 +373,10 @@ namespace Ladeskab.Unit.Test
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
-
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 12 });
+			_fakeRfidReader.RfidEvent +=
+				Raise.EventWith(new RfidEventArgs() { Id = 13 });
 
 			// Assert
 			_fakeDisplay.Received(1).UpdateUserMsg("Forkert RFID tag");
