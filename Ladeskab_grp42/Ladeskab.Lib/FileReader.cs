@@ -11,7 +11,8 @@ namespace Ladeskab.Lib
     {
         public string ReadFile(string path)
         {
-            return File.ReadLines(path).Last();
+            var output = File.ReadLines(path).Last();
+            return output;
         }
     }
 }

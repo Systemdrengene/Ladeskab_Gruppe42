@@ -11,11 +11,9 @@ namespace Ladeskab.Lib
     {
         public void WriteFile(string path, string logmsg)
         {
-            using (StreamWriter sw = File.AppendText(path))
-            {
-
-                sw.WriteLine("New log " + DateTime.Now + " : " + logmsg);
-            }
+            StreamWriter sw = new StreamWriter(path, true);
+            sw.WriteLine("New log " + DateTime.Now + " : " + logmsg);
+            sw.Close();
         }
     }
 }

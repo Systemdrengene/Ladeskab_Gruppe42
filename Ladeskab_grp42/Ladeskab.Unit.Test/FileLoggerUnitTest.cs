@@ -39,12 +39,12 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 1");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 2");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 3");
 
-            Assert.AreEqual(File.Exists(testpath), true);
-            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+            Assert.IsTrue(File.Exists(testpath));
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
             File.Delete(testpath);
         }
@@ -62,11 +62,11 @@ namespace Ladeskab.Unit.Test
             _uut.LogFile("This is log 2");
             _uut.LogFile("This is log 3");
 
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 1");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 2");
-            fakeFileWriter.Received().WriteFile(Arg.Any<string>(), "This is log 3");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 1");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 2");
+            fakeFileWriter.Received().WriteFile(testpath, "This is log 3");
 
-            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
             File.Delete(testpath);
         }
@@ -80,13 +80,13 @@ namespace Ladeskab.Unit.Test
             _uut = new FileLogger(FileWriter, FileReader);
 
             _uut.LogFile("This is log 1");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 1");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
 
             _uut.LogFile("This is log 2");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 2");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
 
             _uut.LogFile("This is log 3");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
             File.Delete(testpath);
         }
@@ -101,13 +101,13 @@ namespace Ladeskab.Unit.Test
             File.Create(testpath);
 
             _uut.LogFile("This is log 1");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 1");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
 
             _uut.LogFile("This is log 2");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 2");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
 
             _uut.LogFile("This is log 3");
-            Assert.AreEqual(_uut.ReadFile(), "This is log 3");
+            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
             File.Delete(testpath);
         }

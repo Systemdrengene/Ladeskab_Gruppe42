@@ -29,7 +29,10 @@ namespace Ladeskab.Lib
         {
             string path = "./log.txt";
 
-            return _filereader.ReadFile(path);
+            string read = _filereader.ReadFile(path);
+            
+
+            return read;
         }
     }
 }
