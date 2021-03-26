@@ -64,12 +64,12 @@ namespace Ladeskab.Unit.Test
 		}
 
 		[Test]
-		public void FileLoggerUnitTest_NoFileExistWriteRead_NewFileRead()
+		public void FileLoggerUnitTest_FileExistWriteRead_NewFileRead()
 		{
 			var FileWriter = new FileWriter();
 			var FileReader = new FileReader();
 
-			_uut = new FileLogger(FileWriter, FileReader);
+			_uut = new FileLogger(FileWriter, FileReader, testpath);
 
 			_uut.LogFile("This is log 1");
 			Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
@@ -80,27 +80,9 @@ namespace Ladeskab.Unit.Test
 			_uut.LogFile("This is log 3");
 			Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
-			File.Delete(testpath);
-		}
-
-		[Test]
-		public void FileLoggerUnitTest_FileExistWriteRead_FileRead()
-		{
-			var FileWriter = new FileWriter();
-			var FileReader = new FileReader();
-
-			_uut = new FileLogger(FileWriter, FileReader);
-
-
-			_uut.LogFile("This is log 1");
-			Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
-
-			_uut.LogFile("This is log 2");
-			Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
-
-			_uut.LogFile("This is log 3");
-			Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
 		}
+
+
 	}
 }

@@ -100,7 +100,7 @@ namespace Ladeskab.Lib
 			}
 			else
 			{
-				if (_chargerState == ChargerState.OverCurrentFail) return;
+				if (_chargerState == ChargerState.OverCurrentFail) return;  
 
 				_chargerState = ChargerState.Idle;  // 0
 			}

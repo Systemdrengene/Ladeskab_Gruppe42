@@ -25,23 +25,24 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_CloseOpenDoor_doorOpenFalse()
 		{
 			//Arrange
-			var result = _uut.OnDoorOpen();  // doorOpen True
+			var result = _uut.OnDoorOpen(); 
 			//Act
-			result = _uut.OnDoorClose();  // doorOpen False
+			result = _uut.OnDoorClose();  
 
 			//Assert
-			Assert.IsFalse(result);  //Expected false
+			Assert.IsFalse(result);  
 		}
 
 		// Close - a closed door
 		[Test]
 		public void DoorUnitTest_CloseClosedDoor_doorOpenFalse()
 		{
-			//arrange
+			//Arrange
+
 			//Act
-			var result = _uut.OnDoorClose();  // doorOpen = false
+			var result = _uut.OnDoorClose(); 
 			//Assert
-			Assert.IsFalse(result);  //Expected false
+			Assert.IsFalse(result); 
 		}
 
 
@@ -50,13 +51,13 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_CloseUnlockedDoor_doorOpenFalse()
 		{
 			// Arrange
-			_uut.UnlockDoor(); //  Doorunlocked = true
+			_uut.UnlockDoor(); 
 
 			//Act
-			bool result = _uut.OnDoorClose();  //doorOpen False
+			bool result = _uut.OnDoorClose(); 
 			//Assert
 
-			Assert.IsFalse(result);  // Expected = false
+			Assert.IsFalse(result);  
 
 		}
 
@@ -65,9 +66,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_CloseLockedDoor_DoorIsLocked()
 		{
 			// Arrange
-			
-			//I forvejen lukket og låst i default
-			 
+
 			//Act
 
 			//Assert
@@ -81,10 +80,11 @@ namespace Ladeskab.Unit.Test
 		[Test]
 		public void DoorUnitTest_TestDoorEvent_DoorClosed()
 		{
+			//Arrange
 			bool notified = false;
 
-			_uut.UnlockDoor();  //Lås op
-			_uut.OnDoorOpen();  // Open door
+			_uut.UnlockDoor();  
+			_uut.OnDoorOpen();  
 			//Act
 			_uut.DoorEvent += (sender, args) => notified = true;
 			_uut.OnDoorClose();
@@ -106,14 +106,14 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_OpenClosedDoor_doorOpenTrue()
 		{
 			//Arrange
-			_uut.UnlockDoor(); // Unlock door så den kan åbnes
+			_uut.UnlockDoor(); 
 			//Act
-			_uut.OnDoorClose();  // Hav døren være lukket så den kan åbnes
+			_uut.OnDoorClose(); 
 
-			var result = _uut.OnDoorOpen();  // doorOpen True
+			var result = _uut.OnDoorOpen();  
 
 			//Assert
-			Assert.IsTrue(result);  //Expected true
+			Assert.IsTrue(result); 
 		}
 
 		// Open Open door
@@ -123,8 +123,8 @@ namespace Ladeskab.Unit.Test
 			//Arrange
 			_uut.UnlockDoor();
 			//Act
-			var result = _uut.OnDoorOpen();  // doorOpen True
-			result = _uut.OnDoorOpen();  // doorOpen True
+			var result = _uut.OnDoorOpen();  
+			result = _uut.OnDoorOpen();  
 
 			//Assert
 			Assert.IsTrue(result);  //Expected true
@@ -136,14 +136,14 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_OpenUnlockedDoor_doorOpenTrue()
 		{
 			// Arrange
-			_uut.UnlockDoor(); //  Doorunlocked = true
+			_uut.UnlockDoor(); 
 
 
 			//Act
-			bool result = _uut.OnDoorOpen();  //doorOpen True
+			bool result = _uut.OnDoorOpen(); 
 			//Assert
 
-			Assert.IsTrue(result);  // Expected = True
+			Assert.IsTrue(result);  
 
 		}
 
@@ -155,11 +155,11 @@ namespace Ladeskab.Unit.Test
             _uut.LockDoor();
 
 			//Act
-            bool result = _uut.OnDoorOpen();  //doorOpen false fordi locked
+            bool result = _uut.OnDoorOpen(); 
 
 			//Assert
 
-			Assert.IsFalse(result);  // Expected = false
+			Assert.IsFalse(result); 
 
 		}
 
@@ -180,7 +180,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorUnitTest_LockDoor_AlreadyLocked()
 		{
 			//Arrange
-			_uut.OnDoorOpen(); //_doorOpen = true
+			_uut.OnDoorOpen(); 
 
 			//Act
 			var result = _uut.LockDoor();

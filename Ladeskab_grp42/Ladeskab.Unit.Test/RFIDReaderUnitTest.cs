@@ -21,6 +21,8 @@ namespace Ladeskab.Unit.Test
         public void ScanRfidTag_NoSubscriber_NoSucces()
         {
             _uut.ScanRFfidTag(12);  //Ingen subscribers
+
+
         }
 
         [Test]
@@ -51,44 +53,5 @@ namespace Ladeskab.Unit.Test
             Assert.That(recievedID, Is.EqualTo(expectedid));
         }
 
-        //public void OnRfidReadTest()
-        //{
-
-
-        //    var obs = Substitute.For<IObserver>();
-        //    _uut.Attach(obs);
-        //    _uut.OnRfidRead(2);
-        //    obs.ReceivedWithAnyArgs().Update(_uut, "RFID");
-        //}
-
-        //[Test]
-        //public void GetIDTest_DefaultValue_Exception()
-        //{
-        //    Assert.Throws<Exception>(() => _uut.GetID(), "RFID hasn't been read!");
-        //}
-
-        //[Test]
-        //public void GetIDTest_PositiveValue()
-        //{
-        //    _uut.Id = 2;
-        //    Assert.That(_uut.GetID(), Is.EqualTo(2));
-        //}
-
-        //[Test]
-        //public void GetIDTest_NegativeValue()
-        //{
-        //    _uut.Id = -2;
-        //    Assert.That(_uut.GetID(), Is.EqualTo(-2));
-        //}
-
-        //[Test]
-        //public void FullTest_PositiveIDValue()
-        //{
-        //    var obs = Substitute.For<IObserver>();
-        //    _uut.Attach(obs);
-        //    _uut.OnRfidRead(2);
-        //    obs.Received(1).Update(_uut, "RFID");
-        //    Assert.That(_uut.GetID(), Is.EqualTo(2));
-        //}
     }
 }

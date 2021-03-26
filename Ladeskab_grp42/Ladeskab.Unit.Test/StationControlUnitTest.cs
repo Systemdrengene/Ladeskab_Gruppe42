@@ -36,7 +36,7 @@ namespace Ladeskab.Unit.Test
 			_uut = new StationControl(_fakeChargeControl, _fakeDoor, _fakeRfidReader, _fakeDisplay, _fileLogger);
 		}
 
-		//Eventuel test af dooreventhandler
+
 		#region DoorEventHandler()
 
 		//Test door event at door open
@@ -96,7 +96,6 @@ namespace Ladeskab.Unit.Test
 			_fakeDisplay.Received(1).UpdateUserMsg("Door cannot open when state = Locked");
 		}
 
-		//Test når State Available men DoorState = False 
 		[Test]
 		public void DoorEventHandler_DoorClosedStateAvailable_CannotOpen()
 		{
@@ -160,7 +159,7 @@ namespace Ladeskab.Unit.Test
 
 		//Test låsning af door med RFid event
 		[Test]
-		public void RFIDDetected_StateAvailableAndChargerConnected_DoorCallOnce()
+		public void RfidDetected_StateAvailableAndChargerConnected_DoorCallOnce()
 		{
 
 			//Arrange
@@ -177,11 +176,11 @@ namespace Ladeskab.Unit.Test
 
 		//Test af start opladning når RFid event
 		[Test]
-		public void RFIDDetected_StateAvailableAndChargerConnected_StartChargeCallOnce()
+		public void RfidDetected_StateAvailableAndChargerConnected_StartChargeCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;  //Test Available state
-			_fakeChargeControl.IsConnected().Returns(true); // Connected med usb
+			_uut._state = StationControl.LadeskabState.Available;  
+			_fakeChargeControl.IsConnected().Returns(true); 
 			//Act - Event i fake
 			_fakeRfidReader.RfidEvent +=
 				Raise.EventWith(new RfidEventArgs() {Id = 1});
@@ -281,7 +280,7 @@ namespace Ladeskab.Unit.Test
 			_fakeRfidReader.RfidEvent +=
 				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
-			// Assert -- Eventuelt to forskellige, da det to forskellige beskeder ikke sikker
+			// Assert 
 			_fakeDisplay.Received(res).UpdateUserMsg("Tag din telefon ud af skabet og luk døren");
 		}
 
