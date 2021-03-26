@@ -37,31 +37,36 @@ namespace Ladeskab.Lib
             _display = display;
             filelog = logger;
             _rfidReader = rfidReader;
-        }
 
-        public void Update(object subject, string msg)
-        {
-            switch(msg)
-            {
-                case "Door opened":
-	                DoorEventHandler();
-                    //_display.UpdateUserMsg("Tilslut telefon");
-                    break;
-                case "Door closed":
-	                DoorEventHandler();
-                    //_display.UpdateUserMsg("Indlæs RFID");
-                    break;
-                case "RFID":
-                    _display.UpdateUserMsg("RFID has been read");
-                    RfidDetected(_rfidReader.GetID());
-                    break;
 
-            }
+            //Subscriber til events fra RFid reader og Door
+            _rfidReader.RfidEvent += RfidDetected; 
+            _door.DoorEvent += DoorEventHandler; 
         }
 
 
-        // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
-        private void RfidDetected(int id)
+
+        //public void Update(object subject, string msg)
+        //{
+        //    switch(msg)
+        //    {
+        //        case "Door opened":
+	       //         DoorEventHandler();
+        //            //_display.UpdateUserMsg("Tilslut telefon");
+        //            break;
+        //        case "Door closed":
+	       //         DoorEventHandler();
+        //            //_display.UpdateUserMsg("Indlæs RFID");
+        //            break;
+        //        case "RFID":
+        //            _display.UpdateUserMsg("RFID has been read");
+        //            RfidDetected(_rfidReader.GetID());
+        //            break;
+
+        //    }
+        //}
+
+        private void RfidDetected(object sender, RfidEventArgs e)
         {
             switch (_state)
             {
@@ -71,8 +76,8 @@ namespace Ladeskab.Lib
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
-                        _oldId = id;
-                        filelog.LogFile( "Skab låst med RFID: " + id);
+                        _oldId = e.Id;
+                        filelog.LogFile( "Skab låst med RFID: " + e.Id);
                         //using (var writer = File.AppendText(logFile))
                         //{
                         //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
@@ -96,11 +101,11 @@ namespace Ladeskab.Lib
 
                 case LadeskabState.Locked:
                     // Check for correct ID
-                    if (id == _oldId)
+                    if (e.Id == _oldId)
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
-                        filelog.LogFile("Skab låst op med RFID: " + id);
+                        filelog.LogFile("Skab låst op med RFID: " + e.Id);
                         //using (var writer = File.AppendText(logFile))
                         //{
                         //    writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
@@ -121,14 +126,14 @@ namespace Ladeskab.Lib
         }
 
        // Her mangler de andre trigger handlere
-        private void DoorEventHandler()  //eventuelt handler
+        private void DoorEventHandler(object sender, DoorEventArgs e)  //eventuelt handler
         {
 
 	        switch (_state)
 	        {
                 case LadeskabState.Available: 
 
-	                if (_door.OnDoorOpen() == true)  //Kan åbne door - Ulåst
+	                if (e.DoorState == true)  //Kan åbne door - Ulåst
 	                {
 		                _state = LadeskabState.DoorOpen;
                         _display.UpdateUserMsg("Tilslut Telefon");
@@ -140,7 +145,7 @@ namespace Ladeskab.Lib
 	                break;
 
                 case LadeskabState.DoorOpen:
-	                if (_door.OnDoorClose() == false)  // Door er closed og ulåst
+	                if (e.DoorState == false)  // Door er closed og ulåst
 	                {
 		                _state = LadeskabState.Available; 
                         _display.UpdateUserMsg("Indlæs RFID");

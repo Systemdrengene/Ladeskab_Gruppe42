@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    public interface IRFIDReader
-    {
-        public int GetID();
+	public class RfidEventArgs : EventArgs
+	{
+		//Rfid id tag
+		public int Id { get; set; }
+	}
+	public interface IRFIDReader
+	{
+		event EventHandler<RfidEventArgs> RfidEvent;
 
-    }
+		//public int GetID();
+		//   public void OnRfidRead(int id);
+	}
 }

@@ -15,7 +15,7 @@ namespace Ladeskab.Unit.Test
 	{
 		private StationControl _uut;
 		private IDoor _fakeDoor;
-		private IRFIDReader _fakeRfidReader;
+		private RFIDReader _fakeRfidReader;
 		private IChargeControl _fakeChargeControl;
 		private IDisplay _fakeDisplay;
 		private FileLogger _fileLogger;
@@ -24,7 +24,7 @@ namespace Ladeskab.Unit.Test
 		public void Setup()
 		{
 			_fakeDoor = Substitute.For<IDoor>();
-			_fakeRfidReader = Substitute.For<IRFIDReader>();
+			_fakeRfidReader = Substitute.For<RFIDReader>();
 			_fakeChargeControl = Substitute.For<IChargeControl>();
 			_fakeDisplay = Substitute.For<IDisplay>();
 			_fileLogger = Substitute.For<FileLogger>();
@@ -44,14 +44,18 @@ namespace Ladeskab.Unit.Test
 		[Test]
 		public void RFIDDetected_StateAvailableAndChargerConnected_DoorCallOnce()
 		{
+
 			//Arrange
 			_uut._state = StationControl.LadeskabState.Available;  //Test Available state
 			_fakeChargeControl.IsConnected().Returns(true); // Connected med usb
 			//Act - Event i fake
-			//var obs = Substitute.For<IObserver>();  // ? Eventuelt brug for RfidEventArgs
-			//_uut.Attach(obs);
-			//_uut.OnRfidRead(2);
-			//obs.ReceivedWithAnyArgs().Update(_uut, "RFID");
+			var obs = Substitute.For<IObserver>();
+			_fakeRfidReader.Attach(obs);
+			_fakeRfidReader.OnRfidRead(1);
+
+			obs.ReceivedWithAnyArgs().Update(_fakeRfidReader, "RFID");
+
+
 			//Assert
 			_fakeDoor.Received(1).LockDoor();
 
