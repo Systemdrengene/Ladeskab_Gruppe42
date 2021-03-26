@@ -155,9 +155,9 @@ namespace Ladeskab.Lib.Test
 
 		#region UpdateDisplay
 
-		[TestCase(2.5, "Fully Charged")] // Fullycharge
-		[TestCase(25.0, "Is Charging")] //IsChargeing
-		[TestCase(525.0, "Current failed")] // OverCurrent
+		[TestCase(2.5, "Fully Charged")] 
+		[TestCase(25.0, "Is Charging")] 
+		[TestCase(525.0, "Current failed")] 
 		public void UpdateDisplay_ChangeState_CalledOnceNoIdle(double testCurr, string m)
 		{
 			//Arrange
@@ -168,14 +168,14 @@ namespace Ladeskab.Lib.Test
 			Console.WriteLine(_mockUsbCharger.CurrentValue);
 
 			//Assert
-			_display.Received(1).UpdateChargeMsg(m); // Intet
+			_display.Received(1).UpdateChargeMsg(m); 
 
 		}
 
-		[TestCase( 0.0, "Idle")]  // Idle
-		[TestCase( 2.5,"Fully Charged") ] // Fully charged
-		[TestCase( 25.0,"Is Charging") ] // is charging
-		[TestCase( 525.0,"Current failed")] // OverCurrent
+		[TestCase( 0.0, "Idle")]  
+		[TestCase( 2.5,"Fully Charged") ] 
+		[TestCase( 25.0,"Is Charging") ] 
+		[TestCase( 525.0,"Current failed")] 
 		public void UpdateDisplay_Events_CalledOnceExceptIdle
 			( double testCurrent, string m)
 		{
