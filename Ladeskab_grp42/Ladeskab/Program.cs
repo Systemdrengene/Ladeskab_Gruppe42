@@ -17,8 +17,8 @@ namespace Ladeskab
             ChargeControl chargeControl = new(display, usbCharger);
             StationControl stationControl = new(chargeControl, door, rfidReader, display, fileLogger);
             
-            door.Attach(stationControl);
-            rfidReader.Attach(stationControl);
+            //door.Attach(stationControl);
+            //rfidReader.Attach(stationControl);
 
             bool finish = false;
             do
@@ -47,7 +47,8 @@ namespace Ladeskab
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
-                        rfidReader.OnRfidRead(id);
+                        //rfidReader.OnRfidRead(id);
+                        rfidReader.ScanRFfidTag(id);
                         break;
 
                     default:
