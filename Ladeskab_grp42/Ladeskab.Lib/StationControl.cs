@@ -26,7 +26,6 @@ namespace Ladeskab.Lib
         private IRFIDReader _rfidReader;
         private int _oldId;
 
-        //private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         //constructor
         public StationControl(IChargeControl Charger, IDoor door, IRFIDReader rfidReader, IDisplay display, FileLogger logger)
@@ -38,33 +37,10 @@ namespace Ladeskab.Lib
             filelog = logger;
             _rfidReader = rfidReader;
 
-
             //Subscriber til events fra RFid reader og Door
             _rfidReader.RfidEvent += RfidDetected; 
             _door.DoorEvent += DoorEventHandler; 
         }
-
-
-
-        //public void Update(object subject, string msg)
-        //{
-        //    switch(msg)
-        //    {
-        //        case "Door opened":
-	       //         DoorEventHandler();
-        //            //_display.UpdateUserMsg("Tilslut telefon");
-        //            break;
-        //        case "Door closed":
-	       //         DoorEventHandler();
-        //            //_display.UpdateUserMsg("Indlæs RFID");
-        //            break;
-        //        case "RFID":
-        //            _display.UpdateUserMsg("RFID has been read");
-        //            RfidDetected(_rfidReader.GetID());
-        //            break;
-
-        //    }
-        //}
 
         private void RfidDetected(object sender, RfidEventArgs e)
         {
@@ -78,25 +54,19 @@ namespace Ladeskab.Lib
                         _charger.StartCharge();
                         _oldId = e.Id;
                         filelog.LogFile( "Skab låst med RFID: " + e.Id);
-                        //using (var writer = File.AppendText(logFile))
-                        //{
-                        //    writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
-                        //}
+
                         _display.UpdateUserMsg("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
-                        // Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                         _state = LadeskabState.Locked;
                     }
                     else
                     {
                         _display.UpdateUserMsg("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
-                        //Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
                     }
 
                     break;
 
                 case LadeskabState.DoorOpen:
                     _display.UpdateUserMsg("Dør er allerede åbnet med et RF-ID");
-                    //Console.WriteLine("Dør er allerede åbnet med et RF-ID");
                     break;
 
                 case LadeskabState.Locked:
@@ -106,21 +76,14 @@ namespace Ladeskab.Lib
                         _charger.StopCharge();
                         _door.UnlockDoor();
                         filelog.LogFile("Skab låst op med RFID: " + e.Id);
-                        //using (var writer = File.AppendText(logFile))
-                        //{
-                        //    writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
-                        //}
 
                         _display.UpdateUserMsg("Tag din telefon ud af skabet og luk døren");
-                        //Console.WriteLine("Tag din telefon ud af skabet og luk døren");
                         _state = LadeskabState.Available;
                     }
                     else
                     {
                         _display.UpdateUserMsg("Forkert RFID tag");
-                        //Console.WriteLine("Forkert RFID tag");
                     }
-
                     break;
             }
         }
@@ -141,7 +104,6 @@ namespace Ladeskab.Lib
 	                else
 	                {
                         _display.UpdateUserMsg("Door cannot close when state is Available");
-                        //throw execption?
 	                }
 	                break;
 
@@ -154,14 +116,13 @@ namespace Ladeskab.Lib
 	                else
 	                {
 		                _display.UpdateUserMsg("Door cannot open when state = DoorOpen");
-                        //throw Exception  Kan ikke åbne door
+
                     }
 	                break;
 
                 case LadeskabState.Locked:
 	                _display.UpdateUserMsg("Door cannot open when state = Locked");
-                    //throw Exception  // Kan ikke åbne door hvis låst
-                    break;
+	                break;
 	        }
         }
 

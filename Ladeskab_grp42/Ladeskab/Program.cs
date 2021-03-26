@@ -16,15 +16,15 @@ namespace Ladeskab
             FileLogger fileLogger = new(new FileWriter(), new FileReader());
             ChargeControl chargeControl = new(display, usbCharger);
             StationControl stationControl = new(chargeControl, door, rfidReader, display, fileLogger);
-            
+
             //door.Attach(stationControl);
             //rfidReader.Attach(stationControl);
-
+            System.Console.WriteLine("Indtast E, O, C, R: ");
             bool finish = false;
             do
             {
-                string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                string input = null;
+
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
@@ -48,12 +48,16 @@ namespace Ladeskab
 
                         int id = Convert.ToInt32(idString);
                         //rfidReader.OnRfidRead(id);
+
                         rfidReader.ScanRFfidTag(id);
                         break;
 
                     default:
                         break;
                 }
+
+                System.Console.WriteLine("Indtast E, O, C, R");
+
             } while (!finish);
         }
     }

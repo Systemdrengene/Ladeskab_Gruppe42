@@ -12,130 +12,95 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Ladeskab.Unit.Test
 {
-    [TestFixture]
-    class FileLoggerUnitTest
-    {
-        private FileLogger _uut;
-        private string testlog = "testlog.txt";
-        private string testpath = "./testlog.txt";
+	[TestFixture]
+	class FileLoggerUnitTest
+	{
+		private FileLogger _uut;
+		private string testpath = "./testlog.txt";
 
-        [SetUp]
-        public void Setup()
-        {
+		[SetUp]
+		public void Setup()
+		{
 
-        }
+		}
 
-        [Test]
-        public void FileLoggerUnitTest_LogFile_WriteFileRecieved()
-        {
-            var fakeFileWriter = Substitute.For<IFileWriter>();
-            var fakeFileReader =  Substitute.For<IFileReader>();
+		[Test]
+		public void FileLoggerUnitTest_LogFile_WriteFileRecieved()
+		{
+			var fakeFileWriter = Substitute.For<IFileWriter>();
+			var fakeFileReader = Substitute.For<IFileReader>();
 
-            _uut = new FileLogger(fakeFileWriter, fakeFileReader, testpath);
+			_uut = new FileLogger(fakeFileWriter, fakeFileReader, testpath);
 
-            //fakeFileWriter.WriteFile("$(SolutionDir)/testlog, "hello")
-
-            _uut.LogFile("This is log 1");
-            _uut.LogFile("This is log 2");
-            _uut.LogFile("This is log 3");
+			_uut.LogFile("This is log 1");
+			_uut.LogFile("This is log 2");
+			_uut.LogFile("This is log 3");
 
 
-
-            fakeFileWriter.Received().WriteFile(testpath, "This is log 1");
-            fakeFileWriter.Received().WriteFile(testpath, "This is log 2");
-            fakeFileWriter.Received().WriteFile(testpath, "This is log 3");
-
-
-            //fakeFileReader.ReadFile(testpath).Returns("This is log 1\nThis is log2\nThis is log3");
-            //Assert.IsTrue(File.Exists(testpath));
-            //Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
-            //File.Delete(testpath);
-
-        }
-
-        [Test]
-        public void FileLoggerUnitTest_FileExistWrite_FileWrittenTo()
-        {
-            var fakeFileWriter = Substitute.For<IFileWriter>();
-            var fakeFileReader = Substitute.For<IFileReader>();
-
-            _uut = new FileLogger(fakeFileWriter, fakeFileReader,testpath);
-            
-
-            _uut.LogFile("This is log 1");
-            _uut.LogFile("This is log 2");
-            _uut.LogFile("This is log 3");
 
 			fakeFileWriter.Received().WriteFile(testpath, "This is log 1");
 			fakeFileWriter.Received().WriteFile(testpath, "This is log 2");
 			fakeFileWriter.Received().WriteFile(testpath, "This is log 3");
 
-			//Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
-
-			//File.Delete(testpath);
 		}
 
-        [Test]
-        public void FileLoggerUnitTest_NoFileExistWriteRead_NewFileRead()
-        {
-            var FileWriter = new FileWriter();
-            var FileReader = new FileReader();
+		[Test]
+		public void FileLoggerUnitTest_FileExistWrite_FileWrittenTo()
+		{
+			var fakeFileWriter = Substitute.For<IFileWriter>();
+			var fakeFileReader = Substitute.For<IFileReader>();
 
-            _uut = new FileLogger(FileWriter, FileReader);
+			_uut = new FileLogger(fakeFileWriter, fakeFileReader, testpath);
 
-            _uut.LogFile("This is log 1");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
 
-            _uut.LogFile("This is log 2");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
+			_uut.LogFile("This is log 1");
+			_uut.LogFile("This is log 2");
+			_uut.LogFile("This is log 3");
 
-            _uut.LogFile("This is log 3");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
+			fakeFileWriter.Received().WriteFile(testpath, "This is log 1");
+			fakeFileWriter.Received().WriteFile(testpath, "This is log 2");
+			fakeFileWriter.Received().WriteFile(testpath, "This is log 3");
 
-            File.Delete(testpath);
-        }
+		}
 
-        [Test]
-        public void FileLoggerUnitTest_FileExistWriteRead_FileRead()
-        {
-            var FileWriter = new FileWriter();
-            var FileReader = new FileReader();
+		[Test]
+		public void FileLoggerUnitTest_NoFileExistWriteRead_NewFileRead()
+		{
+			var FileWriter = new FileWriter();
+			var FileReader = new FileReader();
 
-            _uut = new FileLogger(FileWriter, FileReader);
-      
+			_uut = new FileLogger(FileWriter, FileReader);
 
-            _uut.LogFile("This is log 1");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
+			_uut.LogFile("This is log 1");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
 
-            _uut.LogFile("This is log 2");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
+			_uut.LogFile("This is log 2");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
 
-            _uut.LogFile("This is log 3");
-            Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
+			_uut.LogFile("This is log 3");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
-        }
+			File.Delete(testpath);
+		}
 
-        public void FileLoggerUnitTest_FileExistRead_FileRead()
-        {
-            var FileWriter = new FileWriter();
-            var FileReader = new FileReader();
+		[Test]
+		public void FileLoggerUnitTest_FileExistWriteRead_FileRead()
+		{
+			var FileWriter = new FileWriter();
+			var FileReader = new FileReader();
 
-            _uut = new FileLogger(FileWriter, FileReader);
+			_uut = new FileLogger(FileWriter, FileReader);
 
-            _uut.ReadFile();
 
-            FileReader.Received().ReadFile(testpath);
-        }
+			_uut.LogFile("This is log 1");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 1"));
 
-        public void FileLoggerUnitTest_NoFileExistRead_FileRead()
-        {
-            var FileWriter = new FileWriter();
-            var FileReader = new FileReader();
+			_uut.LogFile("This is log 2");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 2"));
 
-            _uut = new FileLogger(FileWriter, FileReader);
-            _uut.ReadFile();
+			_uut.LogFile("This is log 3");
+			Assert.IsTrue(_uut.ReadFile().Contains("This is log 3"));
 
-            FileReader.Received().ReadFile(testpath);
-        }
-    }
+		}
+	}
 }

@@ -69,8 +69,5 @@ namespace Ladeskab.Lib
 
         #endregion
 
-        #region Subject inheritance
-
-        #endregion
     }
 }

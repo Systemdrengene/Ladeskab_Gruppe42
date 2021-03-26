@@ -92,11 +92,6 @@ namespace Ladeskab.Unit.Test
 			//Assert
 			Assert.IsTrue(notified);
 
-			//var obs = Substitute.For<IObserver>();
-			//_uut.Attach(obs);
-			//_uut.OnDoorClose();  //Close door
-			//obs.Received().Update(_uut, "Door closed");
-
 		}
 
 
@@ -168,8 +163,6 @@ namespace Ladeskab.Unit.Test
 
 		}
 
-
-		
 		#endregion
 
 

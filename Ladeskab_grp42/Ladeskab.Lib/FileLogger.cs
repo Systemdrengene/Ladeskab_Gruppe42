@@ -14,8 +14,6 @@ namespace Ladeskab.Lib
 
         public string Path { get; set; }
 
-        
-
         public FileLogger(IFileWriter filewriter, IFileReader filereader)
         {
             _filewriter = filewriter;
@@ -32,12 +30,9 @@ namespace Ladeskab.Lib
 	        Path = path;
         }
 
-
         public void LogFile(string logmsg)
         {
-            
-
-            _filewriter.WriteFile(Path, logmsg);
+	        _filewriter.WriteFile(Path, logmsg);
         }
 
 		public string ReadFile()
