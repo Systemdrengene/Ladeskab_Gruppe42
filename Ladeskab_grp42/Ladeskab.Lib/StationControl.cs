@@ -55,8 +55,8 @@ namespace Ladeskab.Lib
                         _oldId = e.Id;
                         filelog.LogFile( "Skab låst med RFID: " + e.Id);
 
-                        _display.UpdateUserMsg("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                         _state = LadeskabState.Locked;
+                        _display.UpdateUserMsg("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                     }
                     else
                     {

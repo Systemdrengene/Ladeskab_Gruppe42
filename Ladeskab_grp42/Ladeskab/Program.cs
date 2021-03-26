@@ -28,6 +28,8 @@ namespace Ladeskab
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
+                Console.Clear();
+
                 switch (input[0])
                 {
                     case 'E':
@@ -44,8 +46,9 @@ namespace Ladeskab
 
                     case 'R':
                         System.Console.WriteLine("Indtast RFID id: ");
-                        string idString = System.Console.ReadLine();
 
+                        string idString = System.Console.ReadLine();
+                        Console.Clear();
                         int id = Convert.ToInt32(idString);
                         //rfidReader.OnRfidRead(id);
 

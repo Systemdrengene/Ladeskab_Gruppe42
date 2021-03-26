@@ -110,7 +110,10 @@ namespace Ladeskab.Lib
 		}
 		private void UpdateDisplay()
 		{
-
+			if (_latestState == _chargerState)
+			{
+				return;
+			}
 			switch (_chargerState)
 			{
 				case ChargerState.OverCurrentFail:   //State charge fail
