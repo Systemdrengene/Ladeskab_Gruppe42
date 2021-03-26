@@ -165,12 +165,29 @@ namespace Ladeskab.Unit.Test
 
 
 		[Test]
-		public void DoorUnitTest_UnlockDoor_AlreadyUnlocked()
+		public void DoorUnitTest_UnlockDoor_DoorUnlockedTrue()
 		{
 			//Arrange
-			_uut.UnlockDoor();
+			_uut.LockDoor();
 			//act
-			_uut.UnlockDoor();
+			var result = _uut.UnlockDoor();
+			//Assert
+			Assert.IsTrue(result);
+
+		}
+
+		[Test]
+		public void DoorUnitTest_LockDoor_AlreadyLocked()
+		{
+			//Arrange
+			_uut.OnDoorOpen(); //_doorOpen = true
+
+			//Act
+			var result = _uut.LockDoor();
+
+			//Assert
+			Assert.IsTrue(result);
+
 
 		}
 
