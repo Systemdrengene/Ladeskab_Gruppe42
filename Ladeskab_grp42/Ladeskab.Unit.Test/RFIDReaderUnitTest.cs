@@ -36,10 +36,10 @@ namespace Ladeskab.Unit.Test
 
         }
 
-        [TestCase(12)]
-        [TestCase(-1)]
-        [TestCase(0)]
-        public void ScanRfidTag_IDTransmitted_IdRecieved(int Id)
+        [TestCase(12,12)]
+        [TestCase(-1,0)]
+        [TestCase(1,1)]
+        public void ScanRfidTag_IDTransmitted_IdRecieved(int Id,int expectedid)
         {
             //Arrange
             int recievedID = 0;
@@ -48,7 +48,7 @@ namespace Ladeskab.Unit.Test
             _uut.RfidEvent += (sender, args) => recievedID = args.Id;
             _uut.ScanRFfidTag(Id);
             //Assert
-            Assert.That(recievedID, Is.EqualTo(Id));
+            Assert.That(recievedID, Is.EqualTo(expectedid));
         }
 
         //public void OnRfidReadTest()

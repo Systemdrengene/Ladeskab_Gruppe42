@@ -155,7 +155,6 @@ namespace Ladeskab.Lib.Test
 
 		#region UpdateDisplay
 
-		[TestCase(0.0, "Idle")] // Idle
 		[TestCase(2.5, "Fully Charged")] // Fullycharge
 		[TestCase(25.0, "Is Charging")] //IsChargeing
 		[TestCase(525.0, "Current failed")] // OverCurrent
@@ -173,24 +172,23 @@ namespace Ladeskab.Lib.Test
 
 		}
 
-		[TestCase(5, 0.0, "Idle")]  // Idle
-		[TestCase(5, 2.5,"Fully Charged") ] // Fully charged
-		[TestCase(10, 25.0,"Is Charging") ] // is charging
-		[TestCase(3, 525.0,"Current failed")] // OverCurrent
-		public void UpdateDisplay_ConsecutiveEvents_CalledOnceExceptIdle
-			(int events, double testCurrent, string m)
+		[TestCase( 0.0, "Idle")]  // Idle
+		[TestCase( 2.5,"Fully Charged") ] // Fully charged
+		[TestCase( 25.0,"Is Charging") ] // is charging
+		[TestCase( 525.0,"Current failed")] // OverCurrent
+		public void UpdateDisplay_Events_CalledOnceExceptIdle
+			( double testCurrent, string m)
 		{
 			// Arrange
-
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() {Current = 20});
 			// Act
-			for (int i = 0; i < events; i++)
-			{
-				_mockUsbCharger.CurrentValueEvent +=
+	
+			_mockUsbCharger.CurrentValueEvent +=
 					Raise.EventWith(new CurrentEventArgs() { Current = testCurrent });
-			}
 
 			// Assert
-			_display.Received(events).UpdateChargeMsg(m);
+			_display.Received(1).UpdateChargeMsg(m);
 	
 		}
 
