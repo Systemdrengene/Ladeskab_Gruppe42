@@ -20,6 +20,9 @@ namespace Ladeskab.Unit.Test
 		private IDisplay _fakeDisplay;
 		private FileLogger _fileLogger;
 
+		private IFileReader _fakeFileReader;
+		private IFileWriter _fakeFileWriter;
+
 		[SetUp]
 		public void Setup()
 		{
@@ -27,7 +30,9 @@ namespace Ladeskab.Unit.Test
 			_fakeRfidReader = Substitute.For<IRFIDReader>();
 			_fakeChargeControl = Substitute.For<IChargeControl>();
 			_fakeDisplay = Substitute.For<IDisplay>();
-			_fileLogger = Substitute.For<FileLogger>();
+			_fakeFileReader = Substitute.For<IFileReader>();
+			_fakeFileWriter = Substitute.For<IFileWriter>();
+			_fileLogger = Substitute.For<FileLogger>(_fakeFileWriter,_fakeFileReader);
 			_uut = new StationControl(_fakeChargeControl, _fakeDoor, _fakeRfidReader, _fakeDisplay, _fileLogger);
 		}
 
@@ -331,7 +336,8 @@ namespace Ladeskab.Unit.Test
 				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
 			// Assert
-			_fileLogger.Received(res).ReadFile();
+			_fakeFileWriter.Received(res).WriteFile("./log.txt", "Skab låst op med RFID: " + id1);
+		
 		}
 
 		[Test]

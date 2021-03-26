@@ -9,38 +9,42 @@ namespace Ladeskab.Lib
 {
     public class FileLogger
     {
-        FileWriter _filewriter;
-        FileReader _filereader;
+        IFileWriter _filewriter;
+        IFileReader _filereader;
 
-        //Brug for fake FileLogger - til test, da substitute ikke kan med parameter?
+        public string Path { get; set; }
 
-        public FileLogger()
-        {
-	        _filereader = new();
-	        _filewriter = new();
-        }
+        
 
-        public FileLogger(FileWriter filewriter, FileReader filereader)
+        public FileLogger(IFileWriter filewriter, IFileReader filereader)
         {
             _filewriter = filewriter;
             _filereader = filereader;
+
+            Path = "./log.txt";
         }
+
+        public FileLogger(IFileWriter filewriter, IFileReader filereader, string path)
+        {
+	        _filewriter = filewriter;
+	        _filereader = filereader;
+
+	        Path = path;
+        }
+
 
         public void LogFile(string logmsg)
         {
-            var path = "./log.txt";
-
-            _filewriter.WriteFile(path, logmsg);
-        }
-
-        public string ReadFile()
-        {
-            string path = "./log.txt";
-
-            string read = _filereader.ReadFile(path);
             
 
-            return read;
+            _filewriter.WriteFile(Path, logmsg);
         }
-    }
+
+		public string ReadFile()
+		{
+			string read = _filereader.ReadFile(Path);
+
+			return read;
+		}
+	}
 }
