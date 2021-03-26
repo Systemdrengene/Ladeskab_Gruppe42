@@ -163,7 +163,16 @@ namespace Ladeskab.Unit.Test
 
 		}
 
-		
+
+		[Test]
+		public void DoorUnitTest_UnlockDoor_AlreadyUnlocked()
+		{
+			//Arrange
+			_uut.UnlockDoor();
+			//act
+			_uut.UnlockDoor();
+
+		}
 
 
 		#endregion
