@@ -12,6 +12,14 @@ namespace Ladeskab.Lib
         FileWriter _filewriter;
         FileReader _filereader;
 
+        //Brug for fake FileLogger - til test, da substitute ikke kan med parameter?
+
+        public FileLogger()
+        {
+	        _filereader = new();
+	        _filewriter = new();
+        }
+
         public FileLogger(FileWriter filewriter, FileReader filereader)
         {
             _filewriter = filewriter;

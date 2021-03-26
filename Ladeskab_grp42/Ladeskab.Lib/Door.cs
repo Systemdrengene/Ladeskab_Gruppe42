@@ -6,53 +6,65 @@ using System.Threading.Tasks;
 
 namespace Ladeskab.Lib
 {
-    public class Door : Subject, IDoor
+    public class Door : IDoor
     {
         #region Variables
 
-        private bool doorUnlocked = true;
-        private bool doorOpen = false;
+        public EventHandler<DoorEventArgs> DoorStateEvent;
+
+        private DoorEventArgs State = new DoorEventArgs
+        {
+	        DoorState = false
+        };
+
+
+        private bool _doorUnlocked = true;
+        private bool _doorOpen = false;
         #endregion
 
         #region Door interface
+
+        public event EventHandler<DoorEventArgs> DoorEvent;
+
         public bool LockDoor()
         {
 	        // Locked or open = Kan ikke Lock
-	        if (!doorUnlocked || doorOpen) return doorUnlocked;  // return false;
+	        if (!_doorUnlocked || _doorOpen) return _doorUnlocked;  // return false;
 
-	        doorUnlocked = false; 
+	        _doorUnlocked = false; 
             Console.WriteLine("Door Locked");
-            return doorUnlocked;
+            return _doorUnlocked;
 
         }
         public bool UnlockDoor()
         {
             // Unlocked = kan ikke unlock
-	        if (doorUnlocked) return doorUnlocked;
+	        if (_doorUnlocked) return _doorUnlocked;
             
-	        doorUnlocked = true;
+	        _doorUnlocked = true;
             Console.WriteLine("Door Unlocked");
-            return doorUnlocked;
+            return _doorUnlocked;
         }
 
-        public bool OnDoorOpen()
+        public bool OnDoorOpen() // Åben door
         {
             // Already Open or locked = kan ikke doorOpen
-            if (doorOpen || !doorUnlocked) return doorOpen;
-	        
-	        doorOpen = true;
-            Notify("Door opened");
-			return doorOpen;
+            if (_doorOpen || !_doorUnlocked) return _doorOpen;
+            _doorOpen = true;
+            State.DoorState = true;
+			//Event til Station control
+            DoorEvent?.Invoke(this,State);  
+            return _doorOpen;
         }
 
-        public bool OnDoorClose()
+        public bool OnDoorClose()  // Close door
         {
             // Door closed or locked = kan ikke close  
-            if (!doorOpen || !doorUnlocked) return doorOpen;
-	        
-	        doorOpen = false;
-	        Notify("Door closed");
-	        return doorOpen;
+            if (!_doorOpen || !_doorUnlocked) return _doorOpen;
+            _doorOpen = false;
+            State.DoorState = false;
+            DoorEvent?.Invoke(this,State);  
+	        return _doorOpen;
         }
 
         #endregion

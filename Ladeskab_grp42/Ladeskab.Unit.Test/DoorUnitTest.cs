@@ -1,4 +1,5 @@
 using Ladeskab.Lib;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -76,18 +77,25 @@ namespace Ladeskab.Unit.Test
 
 
 
-		//Test OnDoorClose Notify 
+		//Test DoorEvent
 		[Test]
-		public void DoorUnitTest_NotifyTestCloseDoor_DoorClosed()
+		public void DoorUnitTest_TestDoorEvent_DoorClosed()
 		{
+			bool notified = false;
+
 			_uut.UnlockDoor();  //Lås op
 			_uut.OnDoorOpen();  // Open door
 			//Act
+			_uut.DoorEvent += (sender, args) => notified = true;
+			_uut.OnDoorClose();
 
-			var obs = Substitute.For<IObserver>();
-			_uut.Attach(obs);
-			_uut.OnDoorClose();  //Close door
-			obs.Received().Update(_uut, "Door closed");
+			//Assert
+			Assert.IsTrue(notified);
+
+			//var obs = Substitute.For<IObserver>();
+			//_uut.Attach(obs);
+			//_uut.OnDoorClose();  //Close door
+			//obs.Received().Update(_uut, "Door closed");
 
 		}
 
@@ -160,26 +168,6 @@ namespace Ladeskab.Unit.Test
 
 		}
 
-
-
-		// Door Open
-		[Test]
-		public void DoorUnitTest_NotifyTestOpenDoor_Notify()
-		{
-			//arrange  - Open door so we can close door with notify
-			//_uut.OnDoorClose();  //Notify door open
-			_uut.UnlockDoor();
-			//Act
-
-			var obs = Substitute.For<IObserver>();
-			_uut.Attach(obs);
-			_uut.OnDoorOpen();
-			obs.Received().Update(_uut,"Door opened");
-
-			//Assert
-
-
-		}
 
 		
 		#endregion
