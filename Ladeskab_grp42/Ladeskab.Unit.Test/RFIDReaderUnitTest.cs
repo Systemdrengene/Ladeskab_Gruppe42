@@ -16,43 +16,79 @@ namespace Ladeskab.Unit.Test
         {
             _uut = new RFIDReader();
         }
+
         [Test]
-        public void OnRfidReadTest()
+        public void ScanRfidTag_NoSubscriber_NoSucces()
         {
-            var obs = Substitute.For<IObserver>();
-            _uut.Attach(obs);
-            _uut.OnRfidRead(2);
-            obs.ReceivedWithAnyArgs().Update(_uut, "RFID");
+            _uut.ScanRFfidTag(12);  //Ingen subscribers
         }
 
         [Test]
-        public void GetIDTest_DefaultValue_Exception()
+        public void ScanRfidtag_1Subscriber_Notified()
         {
-            Assert.Throws<Exception>(() => _uut.GetID(), "RFID hasn't been read!");
+	        //Arrange.
+            bool notified = false;
+            //Act
+            _uut.RfidEvent += (sender, args) => notified = true;
+            _uut.ScanRFfidTag(12);
+            //Assert
+            Assert.IsTrue(notified);
+
         }
 
-        [Test]
-        public void GetIDTest_PositiveValue()
+        [TestCase(12)]
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void ScanRfidTag_IDTransmitted_IdRecieved(int Id)
         {
-            _uut.Id = 2;
-            Assert.That(_uut.GetID(), Is.EqualTo(2));
+            //Arrange
+            int recievedID = 0;
+
+            //Act
+            _uut.RfidEvent += (sender, args) => recievedID = args.Id;
+            _uut.ScanRFfidTag(Id);
+            //Assert
+            Assert.That(recievedID, Is.EqualTo(Id));
         }
 
-        [Test]
-        public void GetIDTest_NegativeValue()
-        {
-            _uut.Id = -2;
-            Assert.That(_uut.GetID(), Is.EqualTo(-2));
-        }
+        //public void OnRfidReadTest()
+        //{
 
-        [Test]
-        public void FullTest_PositiveIDValue()
-        {
-            var obs = Substitute.For<IObserver>();
-            _uut.Attach(obs);
-            _uut.OnRfidRead(2);
-            obs.Received(1).Update(_uut, "RFID");
-            Assert.That(_uut.GetID(), Is.EqualTo(2));
-        }
+
+        //    var obs = Substitute.For<IObserver>();
+        //    _uut.Attach(obs);
+        //    _uut.OnRfidRead(2);
+        //    obs.ReceivedWithAnyArgs().Update(_uut, "RFID");
+        //}
+
+        //[Test]
+        //public void GetIDTest_DefaultValue_Exception()
+        //{
+        //    Assert.Throws<Exception>(() => _uut.GetID(), "RFID hasn't been read!");
+        //}
+
+        //[Test]
+        //public void GetIDTest_PositiveValue()
+        //{
+        //    _uut.Id = 2;
+        //    Assert.That(_uut.GetID(), Is.EqualTo(2));
+        //}
+
+        //[Test]
+        //public void GetIDTest_NegativeValue()
+        //{
+        //    _uut.Id = -2;
+        //    Assert.That(_uut.GetID(), Is.EqualTo(-2));
+        //}
+
+        //[Test]
+        //public void FullTest_PositiveIDValue()
+        //{
+        //    var obs = Substitute.For<IObserver>();
+        //    _uut.Attach(obs);
+        //    _uut.OnRfidRead(2);
+        //    obs.Received(1).Update(_uut, "RFID");
+        //    Assert.That(_uut.GetID(), Is.EqualTo(2));
+        //}
     }
 }
