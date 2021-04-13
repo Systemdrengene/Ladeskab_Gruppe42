@@ -33,7 +33,7 @@ namespace Ladeskab.Unit.Test
 			_fakeDisplay = Substitute.For<IDisplay>();
 			_fakeFileReader = Substitute.For<IFileReader>();
 			_fakeFileWriter = Substitute.For<IFileWriter>();
-			_fileLogger = Substitute.For<IFileLogger>(_fakeFileWriter,_fakeFileReader);
+			_fileLogger = Substitute.For<IFileLogger>();
 			_uut = new StationControl(_fakeChargeControl, _fakeDoor, _fakeRfidReader, _fakeDisplay, _fileLogger);
 		}
 
@@ -204,13 +204,13 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableChargerConnected_LogDoorLockedCallOnce()
 		{
 			//Arrange
-
+			int id = 1;
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act  -- Brug for EVENT
 			_fakeRfidReader.RfidEvent +=
-				Raise.EventWith(new RfidEventArgs() { Id = 1 });
+				Raise.EventWith(new RfidEventArgs() { Id = id });
 			//Assert
-			_fileLogger.Received(1).LogFile("Skab låst med RFID: ");
+			_fileLogger.Received(1).LogFile("Skab låst med RFID: " + id);
 
 		}
 
@@ -340,13 +340,13 @@ namespace Ladeskab.Unit.Test
 			// Act - Raise event in fake
 			// Act - Raise event in fake
 			_fakeRfidReader.RfidEvent +=
-				Raise.EventWith(new RfidEventArgs() { Id = id1 });
+				Raise.EventWith(new RfidEventArgs() { Id = id1 });  
 			_fakeRfidReader.RfidEvent +=
 				Raise.EventWith(new RfidEventArgs() { Id = id2 });
 
 			// Assert
-			_fakeFileWriter.Received(res).WriteFile("./log.txt", "Skab låst op med RFID: " + id1);
-		
+			_fileLogger.Received(res).LogFile("Skab låst op med RFID: " + id1);
+
 		}
 
 		[Test]
