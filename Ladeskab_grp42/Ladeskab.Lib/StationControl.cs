@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ladeskab.Lib.Interfaces;
 
 namespace Ladeskab.Lib
 {
@@ -22,13 +23,13 @@ namespace Ladeskab.Lib
         private IDoor _door;
         private IChargeControl _charger;
         private IDisplay _display;
-        private FileLogger filelog;
+        private IFileLogger filelog;
         private IRFIDReader _rfidReader;
         private int _oldId;
 
 
         //constructor
-        public StationControl(IChargeControl Charger, IDoor door, IRFIDReader rfidReader, IDisplay display, FileLogger logger)
+        public StationControl(IChargeControl Charger, IDoor door, IRFIDReader rfidReader, IDisplay display, IFileLogger logger)
         {
             _state = new LadeskabState();
             _charger = Charger;

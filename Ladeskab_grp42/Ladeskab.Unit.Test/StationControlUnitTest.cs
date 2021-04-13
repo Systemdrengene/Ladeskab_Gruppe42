@@ -7,6 +7,7 @@ using Ladeskab.Lib;
 using NSubstitute;
 using NUnit.Framework;
 using UsbSimulator;
+using Ladeskab.Lib.Interfaces;
 
 namespace Ladeskab.Unit.Test
 {
@@ -18,7 +19,7 @@ namespace Ladeskab.Unit.Test
 		private IRFIDReader _fakeRfidReader;
 		private IChargeControl _fakeChargeControl;
 		private IDisplay _fakeDisplay;
-		private FileLogger _fileLogger;
+		private IFileLogger _fileLogger;
 
 		private IFileReader _fakeFileReader;
 		private IFileWriter _fakeFileWriter;
@@ -32,7 +33,7 @@ namespace Ladeskab.Unit.Test
 			_fakeDisplay = Substitute.For<IDisplay>();
 			_fakeFileReader = Substitute.For<IFileReader>();
 			_fakeFileWriter = Substitute.For<IFileWriter>();
-			_fileLogger = Substitute.For<FileLogger>(_fakeFileWriter,_fakeFileReader);
+			_fileLogger = Substitute.For<IFileLogger>(_fakeFileWriter,_fakeFileReader);
 			_uut = new StationControl(_fakeChargeControl, _fakeDoor, _fakeRfidReader, _fakeDisplay, _fileLogger);
 		}
 
@@ -65,6 +66,7 @@ namespace Ladeskab.Unit.Test
 			//Assert
 			_fakeDisplay.Received(1).UpdateUserMsg("Tilslut Telefon");
 			_fakeDisplay.Received(0).UpdateUserMsg("Indlæs RFID");	
+
 		}
 
 		[Test]
