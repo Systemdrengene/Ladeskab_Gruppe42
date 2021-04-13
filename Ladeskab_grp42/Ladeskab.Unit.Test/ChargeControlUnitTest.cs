@@ -172,26 +172,64 @@ namespace Ladeskab.Lib.Test
 
 		}
 
-		[TestCase( 0.0, "Idle")]  
-		[TestCase( 2.5,"Fully Charged") ] 
-		[TestCase( 25.0,"Is Charging") ] 
-		[TestCase( 525.0,"Current failed")] 
-		public void UpdateDisplay_Events_CalledOnceExceptIdle
-			( double testCurrent, string m)
+		[Test]
+		public void UpdateDisplay_EventsCurrentIdle_CalledOnceExceptIdle()
 		{
 			// Arrange
 			_mockUsbCharger.CurrentValueEvent +=
-				Raise.EventWith(new CurrentEventArgs() {Current = 20});
+				Raise.EventWith(new CurrentEventArgs() { Current = 1 });
 			// Act
-	
 			_mockUsbCharger.CurrentValueEvent +=
-					Raise.EventWith(new CurrentEventArgs() { Current = testCurrent });
+					Raise.EventWith(new CurrentEventArgs() { Current = 0 });
 
 			// Assert
-			_display.Received(1).UpdateChargeMsg(m);
-	
+			_display.Received(1).UpdateChargeMsg("Idle");
 		}
 
+		[Test]
+		public void UpdateDisplay_EventsCurrentFullyCharged_CalledOnceExceptIdle()
+		{
+			// Arrange
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 6 });
+			// Act
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 4 });
+
+			// Assert
+			_display.Received(1).UpdateChargeMsg("Fully Charged");
+
+		}
+
+		[Test]
+		public void UpdateDisplay_EventsCurrentIsCharging_CalledOnceExceptIdle()
+		{
+			// Arrange
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 4});
+			// Act
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 6 });
+
+			// Assert
+			_display.Received(1).UpdateChargeMsg("Is Charging");
+
+		}
+
+		[Test]
+		public void UpdateDisplay_EventsCurrentFailed_CalledOnceExceptIdle()
+		{
+			// Arrange
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 4 });
+			// Act
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 501 });
+
+			// Assert
+			_display.Received(1).UpdateChargeMsg("Current failed");
+
+		}
 
 		[Test]
 		public void UpdateDisplay_ChargerGoesFromChargingToIdle_ChargerStateIdle()
