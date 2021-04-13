@@ -10,6 +10,7 @@ using NSubstitute;
 using System.IO;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
+
 namespace Ladeskab.Unit.Test
 {
 	[TestFixture]
