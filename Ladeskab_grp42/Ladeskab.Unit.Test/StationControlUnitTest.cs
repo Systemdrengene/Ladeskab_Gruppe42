@@ -44,7 +44,6 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorOpenStateAvailable_stateChangeToDoorOpen()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;
 
 			// Act - Raise event in fake
 			_fakeDoor.DoorEvent +=
@@ -59,7 +58,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorOpenStateAvailable_DisplayCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			//Act
 			_fakeDoor.DoorEvent +=
 				Raise.EventWith(new DoorEventArgs() {DoorState = true});
@@ -69,13 +68,14 @@ namespace Ladeskab.Unit.Test
 		}
 
 		[Test]
-		public void DoorEventHandler_DoorOpenStateDoorOpen_AlreadyOpen()
+		public void DoorEventHandler_DoorOpenStateDoorOpen_StillOpen()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.DoorOpen;
+			_fakeDoor.DoorEvent +=  // DoorState = True
+				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Act
-			_fakeDoor.DoorEvent +=
+			_fakeDoor.DoorEvent +=  // DoorState = True ->> DoorOpen
 				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Assert
@@ -86,10 +86,12 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorOpenStateLocked_CannotOpen()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Locked;
-
+			_fakeChargeControl.IsConnected().Returns(true);
+			_fakeRfidReader.RfidEvent +=  // Ladeskabstate = locked
+				Raise.EventWith(new RfidEventArgs() {Id = 2}); 
+			
 			//Act
-			_fakeDoor.DoorEvent +=
+			_fakeDoor.DoorEvent +=  // Try open door
 				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Assert
@@ -100,7 +102,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorClosedStateAvailable_CannotOpen()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 
 			// Act
 			_fakeDoor.DoorEvent +=
@@ -115,10 +117,11 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorClosedStateDoorOpen_StateChangeToAvailable()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.DoorOpen;
+			_fakeDoor.DoorEvent +=  // Available -> DoorOpen state
+				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Act
-			_fakeDoor.DoorEvent +=
+			_fakeDoor.DoorEvent +=  // DoorOpen State -> Available
 				Raise.EventWith(new DoorEventArgs() { DoorState = false });
 
 			//Assert
@@ -129,10 +132,11 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorClosedStateDoorOpen_DisplayCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.DoorOpen;
+			_fakeDoor.DoorEvent +=  // Available -> DoorOpen state
+				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Act
-			_fakeDoor.DoorEvent +=
+			_fakeDoor.DoorEvent += 
 				Raise.EventWith(new DoorEventArgs() { DoorState = false });
 
 			//Assert
@@ -143,7 +147,10 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorClosedStateLocked_CantOpen()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Locked;
+			_fakeChargeControl.IsConnected().Returns(true);
+			_fakeRfidReader.RfidEvent +=  // Ladeskabstate = locked
+				Raise.EventWith(new RfidEventArgs() { Id = 2 });
+
 
 			//Act
 			_fakeDoor.DoorEvent +=
@@ -163,7 +170,7 @@ namespace Ladeskab.Unit.Test
 		{
 
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;  //Test Available state
+
 			_fakeChargeControl.IsConnected().Returns(true); // Connected med usb
 			//Act - Event i fake
 			_fakeRfidReader.RfidEvent +=
@@ -179,7 +186,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableAndChargerConnected_StartChargeCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;  
+
 			_fakeChargeControl.IsConnected().Returns(true); 
 			//Act - Event i fake
 			_fakeRfidReader.RfidEvent +=
@@ -195,7 +202,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableChargerConnected_LogDoorLockedCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act  -- Brug for EVENT
 			_fakeRfidReader.RfidEvent +=
@@ -210,7 +217,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableAndChargerConnect_DisplayCallOnce()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act -- EVENT Ligesom overstående test
 			_fakeRfidReader.RfidEvent +=
@@ -224,7 +231,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableAndChargerConnect_StateChanges()
 		{
 			//Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 			//Act -- EVENT Ligesom overstående test
 			_fakeRfidReader.RfidEvent +=
@@ -238,7 +245,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateAvailableAndChargerNotConnected_DisplayCalledOnce()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(false);
 
 			// Act - Raise event in fake
@@ -253,7 +260,8 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_StateDoorOpen_Throws()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.DoorOpen;
+			_fakeDoor.DoorEvent +=  // Available -> DoorOpen
+				Raise.EventWith(new DoorEventArgs() {DoorState = true});
 			_fakeChargeControl.IsConnected().Returns(false);
 
 			//Act -- RFID Event
@@ -271,7 +279,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSim_DisplayCalls(int id1, int id2, int res)
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event RFIDDetected
@@ -289,7 +297,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSim_CallsChargerOnce(int id1, int id2, int res)
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
@@ -307,7 +315,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSim_CallsDoorOnce(int id1, int id2, int res)
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
@@ -324,7 +332,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSim_CallsLogfileOnce(int id1, int id2, int res)
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
@@ -343,7 +351,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSimRFIDMatch_StateChangesBack()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
@@ -358,7 +366,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSimNoRFIDMatch_StateChangesBack()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
@@ -374,7 +382,7 @@ namespace Ladeskab.Unit.Test
 		public void RfidDetected_FullCycleSimNoRFIDMatch_DisplayCalledOnce()
 		{
 			// Arrange
-			_uut._state = StationControl.LadeskabState.Available;
+
 			_fakeChargeControl.IsConnected().Returns(true);
 
 			// Act - Raise event in fake
