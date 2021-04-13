@@ -105,12 +105,12 @@ namespace Ladeskab.Lib.Test
 
 		#region EvalCurrentTestCases
 
-		[TestCase(0.000, 0)]
-		[TestCase(0.001, 1)]
-		[TestCase(5.000, 1)]
-		[TestCase(5.001, 2)]
-		[TestCase(500.000, 2)]
-		[TestCase(500.001, 3)]
+		[TestCase(0.000, 0)] // Idle
+		[TestCase(0.001, 1)] // Fully charged
+		[TestCase(5.000, 1)] // fully charged
+		[TestCase(5.001, 2)] // Charging
+		[TestCase(500.000, 2)]  // Charging
+		[TestCase(500.001, 3)]  // Overcurrent 
 		public void EvalCurr_CurrrentCharge_ChargeStateIsCorrect(double currCharge, int chargeState)
 		{
 			//Arrange
