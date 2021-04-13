@@ -13,7 +13,7 @@ namespace Ladeskab
             RFIDReader rfidReader = new();
             Display display = new();
             UsbChargerSimulator usbCharger = new();
-            FileLogger fileLogger = new(new FileWriter(), new FileReader());
+            FileLogger fileLogger = new(new FileWriter(), new FileReader(), "./log.txt");
             ChargeControl chargeControl = new(display, usbCharger);
             StationControl stationControl = new(chargeControl, door, rfidReader, display, fileLogger);
 

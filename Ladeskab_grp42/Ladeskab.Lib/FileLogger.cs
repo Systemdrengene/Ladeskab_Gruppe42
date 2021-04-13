@@ -14,14 +14,6 @@ namespace Ladeskab.Lib
 
         public string Path { get; set; }
 
-        public FileLogger(IFileWriter filewriter, IFileReader filereader)
-        {
-            _filewriter = filewriter;
-            _filereader = filereader;
-
-            Path = "./log.txt";
-        }
-
         public FileLogger(IFileWriter filewriter, IFileReader filereader, string path)
         {
 	        _filewriter = filewriter;
