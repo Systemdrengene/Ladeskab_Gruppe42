@@ -45,7 +45,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorOpenStateAvailable_stateChangeToDoorOpen()
 		{
 			//Arrange
-
+		
 			// Act - Raise event in fake
 			_fakeDoor.DoorEvent +=
 				Raise.EventWith(new DoorEventArgs() {DoorState = true});
@@ -73,7 +73,7 @@ namespace Ladeskab.Unit.Test
 		public void DoorEventHandler_DoorOpenStateDoorOpen_StillOpen()
 		{
 			//Arrange
-			_fakeDoor.DoorEvent +=  // DoorState = True
+			_fakeDoor.DoorEvent +=  // Available til DoorState = True
 				Raise.EventWith(new DoorEventArgs() { DoorState = true });
 
 			//Act

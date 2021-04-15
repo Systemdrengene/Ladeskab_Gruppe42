@@ -155,8 +155,8 @@ namespace Ladeskab.Lib.Test
 
 		#region UpdateDisplay
 
-		[TestCase(2.5, "Fully Charged")] 
-		[TestCase(25.0, "Is Charging")] 
+		[TestCase(4.9, "Fully Charged")] 
+		[TestCase(5.1, "Is Charging")] 
 		[TestCase(525.0, "Current failed")] 
 		public void UpdateDisplay_ChangeState_CalledOnceNoIdle(double testCurr, string m)
 		{
