@@ -94,7 +94,7 @@ namespace Ladeskab.Lib
 				_chargerState = ChargerState.IsCharging;  //1
 			}
 			else if (_chargeCurrent > ZeroChargeCurrent 
-			         && _chargeCurrent <= MinimumChargeCurrent) // Fully charged
+			         && _chargeCurrent <= MinimumChargeCurrent) // Fully charged  5 mA > chargeCurrent > 0 mA
 			{
 				_chargerState = ChargerState.FullyCharged; // 2
 			}

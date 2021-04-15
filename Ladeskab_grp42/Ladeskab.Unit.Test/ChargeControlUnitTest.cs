@@ -155,10 +155,29 @@ namespace Ladeskab.Lib.Test
 
 		#region UpdateDisplay
 
-		[TestCase(4.9, "Fully Charged")] 
-		[TestCase(5.1, "Is Charging")] 
-		[TestCase(525.0, "Current failed")] 
-		public void UpdateDisplay_ChangeState_CalledOnceNoIdle(double testCurr, string m)
+		[TestCase(-1.0, "Idle")]
+		[TestCase(0.0, "Idle")]
+		[TestCase(1.0, "Fully Charged")]
+		public void UpdateDisplay_ChangeState0mA_CalledOnceNoIdle(double testCurr, string m)
+		{
+			//Arrange
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = 6 });
+			Console.WriteLine(_mockUsbCharger.CurrentValue);
+			// Act
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = testCurr });
+			Console.WriteLine(_mockUsbCharger.CurrentValue);
+
+			//Assert
+			_display.Received(1).UpdateChargeMsg(m);
+
+		}
+
+		[TestCase(4.9, "Fully Charged")]
+		[TestCase(5.0, "Fully Charged")]
+		[TestCase(5.1, "Is Charging")]
+		public void UpdateDisplay_ChangeState5mA_CalledOnceNoIdle(double testCurr, string m)
 		{
 			//Arrange
 
@@ -172,6 +191,22 @@ namespace Ladeskab.Lib.Test
 
 		}
 
+		[TestCase(499.9, "Is Charging")]
+		[TestCase(500.0, "Is Charging")]
+		[TestCase(501.0, "Current failed")]
+		public void UpdateDisplay_ChangeState500mA_CalledOnceNoIdle(double testCurr, string m)
+		{
+			//Arrange
+
+			// Act
+			_mockUsbCharger.CurrentValueEvent +=
+				Raise.EventWith(new CurrentEventArgs() { Current = testCurr });
+			Console.WriteLine(_mockUsbCharger.CurrentValue);
+
+			//Assert
+			_display.Received(1).UpdateChargeMsg(m);
+
+		}
 		[Test]
 		public void UpdateDisplay_EventsCurrentIdle_CalledOnceExceptIdle()
 		{
